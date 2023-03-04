@@ -8,9 +8,9 @@ backend = FlaskLib()
 if os.environ.get('SONU_BACKEND_ENV') == 'mohit':
   # I need to run 'sudo chown $USER:$USER /var/run/postgresql -R'
   #        and 'postgres -D /var/lib/pgsql/data' in another terminal.
-  db = database.Database(dbname='project_name', user="", password="")
+  db = database.Database(dbname='project_name', user="mohit", password="mohit")
 else:
-  db = database.Database(dbname='project_name', user="", password="", host='localhost')
+  db = database.Database(dbname='project_name', user="sonu", password="sonu_pass", host='localhost')
 
 def ValidateInputs(params, frontend_dict, output):
   for field in params:

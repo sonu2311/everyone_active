@@ -37,7 +37,7 @@ function Example2() {
 
   return (
     <div >
-      <Header/>
+      {/* <Header/> */}
       <h2>Example2</h2>
       <div className="top_box" >
         {books.map((book, book_index) => (

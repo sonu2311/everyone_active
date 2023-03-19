@@ -2,6 +2,8 @@ from flask_lib import FlaskLib
 import database
 import time
 import os
+import json
+import urllib
 
 backend = FlaskLib()
 
@@ -238,7 +240,7 @@ def reset_password(frontend_dict, session):
 @backend.api('/admin_get_all_users')
 def admin_get_all_users(frontend_dict, session):
   output = {}
-  if not ValidateAdminLogin(schedule, output):
+  if not ValidateAdminLogin(session, output):
     return output
   output["all_users"] = db.readQuery("""
     SELECT id, name, email, role, profile_pic
@@ -255,7 +257,7 @@ def admin_get_all_users(frontend_dict, session):
 # Possible Output: {"error": "Old password is not correct."}
 @backend.api('/update_password')
 def update_password(frontend_dict, session):
-  frontend_dict["user_id"] = GetLoginId(schedule)
+  frontend_dict["user_id"] = GetLoginId(session)
   if frontend_dict["new_password"] != frontend_dict["repeat_password"]:
     return {ERROR_KEY: "your password is different from repeat password"}
   result = db.readQuery("""
@@ -282,7 +284,7 @@ def update_password(frontend_dict, session):
 @backend.api('/upload_file')
 def upload_file(frontend_dict, session):
   output = {}
-  if not ValidateLogin(schedule, output):
+  if not ValidateLogin(session, output):
     return output
   directory = os.path.realpath(os.path.dirname(__file__) + "/../public/data")
   filename = "file_"+str(int(time.time()))+"." + frontend_dict["filename"].split(".")[-1]

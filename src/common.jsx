@@ -3,16 +3,40 @@ import Example2 from './example2';
 import Example3 from './example3';
 import {Routes, Route, HashRouter} from "react-router-dom"
 import React from 'react';
+import Login from './login';
+import Signup from './signup';
+import ForgotPassword from './forgot_password';
+import ResetPassword from './reset_password';
+import AdminAllUsers from './admin_all_users';
+import EditProfile from './profile_page';
+import AdminManageMemberships from './Admin_manage_memberships';
+import AdminManageStudio from './Admin_manage_studio';
+import AddStudio from './add_studio';
+import AdminTrainersAndScheduleTypePage from './Admin_trainers_and_schedule_type_page';
+import AdminManageSchedulePage from './Admin_manage_schedule_page';
 
 function MainFunc() {
   return (
     <HashRouter>
       <Routes>
         <Route >
-          <Route path="/" element={<Example1 />} />
+          <Route path="/" element={<AdminManageSchedulePage/>} />
           <Route path="/example1" element={<Example1 />} />
           <Route path="/example2" element={<Example2 />} />
           <Route path="/example3" element={<Example3 />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/reset_password" element={<ResetPassword />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/admin_all_users" element={<AdminAllUsers />} />
+          <Route path="/profile_page/:id" element={<EditProfile/>} />
+          <Route path="/Admin_manage_memberships" element={<AdminManageMemberships/>} />
+          <Route path="/Admin_manage_studio" element={<AdminManageStudio/>} />         
+          <Route path="/add_studio" element={<AddStudio/>} />
+          <Route path="/Admin_trainers_and_schedule_type_page" element={<AdminTrainersAndScheduleTypePage/>} />
+          <Route path="/Admin_manage_schedule_page" element={<AdminManageSchedulePage/>} />
+          
+          {/* <Route path="/login" element={<Login />} /> */}
           <Route path="*" element={<h1>Invalid</h1>} />
         </Route>
       </Routes>

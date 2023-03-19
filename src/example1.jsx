@@ -3,6 +3,9 @@ import {Header} from './header';
 import React from 'react';
 import {api} from './library';
 
+const today = dayjs();
+const yesterday = dayjs().subtract(1, 'day');
+const todayStartOfTheDay = today.startOf('day');
 
 function Example1() {
   const [name, setName] = React.useState("A")
@@ -27,7 +30,7 @@ function Example1() {
   }
 
   return (<>
-    <Header/>
+    {/* <Header/> */}
     <div className="top_box" >
       <h2>Example1</h2>
       <div>
@@ -36,9 +39,13 @@ function Example1() {
       <button onClick={() => new_name()} >Click for new name</button>
       <br/>
       <button onClick={() => try_signup()} >Try SignUp</button>
+
     </div>
   </>
   );
 }
+
+
+
 
 export default Example1;

@@ -50,7 +50,7 @@ function Login() {
       else{
         console.log("Login successful !")
         setSession(backend_output.session)
-        window.location.href = "#/all_courses"
+        window.location.href = "#/Price_plan_page"
       }
     })
   }

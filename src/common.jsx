@@ -14,13 +14,15 @@ import AdminManageStudio from './Admin_manage_studio';
 import AddStudio from './add_studio';
 import AdminTrainersAndScheduleTypePage from './Admin_trainers_and_schedule_type_page';
 import AdminManageSchedulePage from './Admin_manage_schedule_page';
+import PricePlanPage from './Price_plan_page';
+import MembershipJoinPage from './Membership_join_page';
 
 function MainFunc() {
   return (
     <HashRouter>
       <Routes>
         <Route >
-          <Route path="/" element={<AdminManageSchedulePage/>} />
+          <Route path="/" element={<Example1 />} />
           <Route path="/example1" element={<Example1 />} />
           <Route path="/example2" element={<Example2 />} />
           <Route path="/example3" element={<Example3 />} />
@@ -35,8 +37,8 @@ function MainFunc() {
           <Route path="/add_studio" element={<AddStudio/>} />
           <Route path="/Admin_trainers_and_schedule_type_page" element={<AdminTrainersAndScheduleTypePage/>} />
           <Route path="/Admin_manage_schedule_page" element={<AdminManageSchedulePage/>} />
-          
-          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/Price_plan_page" element={<PricePlanPage/>} />
+          <Route path="/Membership_join_page/:id" element={<MembershipJoinPage/>} />
           <Route path="*" element={<h1>Invalid</h1>} />
         </Route>
       </Routes>

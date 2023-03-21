@@ -42,7 +42,22 @@ export function AddSchedule(){
   const [studioId, setStudioId]= React.useState(0)
   const [trainerName, setTrainerName]= React.useState("")
   const [scheduleType, setScheduleType]= React.useState("")
-  
+  const [scheduleTypeList, setScheduleTypeList]= React.useState([])
+
+ 
+
+
+  React.useEffect(()=> {
+    api("/get_all_schedule_type", {}, function(backend_output){
+      if("error" in backend_output){
+        alert(backend_output.error)
+      }
+      else{
+        console.log("/get_all_schedules=== ",backend_output.results )
+        setScheduleTypeList(backend_output.results)
+      } 
+    })
+  },[])
 	
   const adminAddNewSchedule = function(){	
 		api("/add_schedule", {name:scheduleName, start_time:startTime, end_time:endTime, schedule_date:scheduleDate, studio_id:studioId, trainer:trainerName, schedule_type:scheduleType}, 
@@ -81,7 +96,30 @@ export function AddSchedule(){
                     <TextField fullWidth label="Trainer Name" type="text" name="name" value={trainerName} onChange={(e)=> setTrainerName(e.target.value)} />
                   </div>
                   <div style={{"margin":"20px"}}>
-                    <TextField fullWidth label="Schedule Type" type="text" name="name" value={scheduleType} onChange={(e)=> setScheduleType(e.target.value)} />
+                    {/* <TextField fullWidth label="Schedule Type" type="text" name="name" value={scheduleType} onChange={(e)=> setScheduleType(e.target.value)} /> */}
+
+                    <div className='textal' style={{"width":"100%"}} >
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-select-small">Schedule Type</InputLabel>
+                        <Select
+                          labelId="demo-select-small"
+                          id="demo-select-small"
+                          value={scheduleType}
+                          label="Schedule Type"
+                          onChange={(e) => setScheduleType(e.target.value)}
+                        >  
+                          {scheduleTypeList.map((x) => (
+                            <MenuItem className='answertype' value={"FREE"} >{x}</MenuItem>
+                          ))}
+                         
+                          
+                        </Select>
+                      </FormControl>
+                    </div>
+
+
+
+
                   </div>
                   <div style={{"margin":"20px"}}>
                     <TextField fullWidth label="Studio Id" type="number" name="name" value={studioId} onChange={(e)=> setStudioId(e.target.value)} />
@@ -125,7 +163,7 @@ export function Row({row}) {
   const [scheduleType, setScheduleType]= React.useState(row.schedule_type)
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
-   
+
   
   const update_schedule = function(){	
     api("/update_schedule", {name:scheduleName, start_time:startTime, end_time:endTime, schedule_date:scheduleDate, studio_id:studioId, trainer:trainerName, schedule_type:scheduleType}, 
@@ -270,7 +308,7 @@ export function BasicTable({scheduleList}) {
             <br/> */}
         <TableBody>
           {scheduleList.map((row) => (
-            <Row row={row} scheduleList={scheduleList}/>
+            <Row row={row} scheduleList={scheduleList} />
           ))}
         </TableBody>
       </Table>
@@ -283,17 +321,18 @@ function AdminManageSchedulePage(){
   const [scheduleList, setScheduleList]= React.useState([])
   const [studioId, setStudiosId]= React.useState(3)
   const [scheduleDate, setScheduleDate]= React.useState("")
-   
+    
 	React.useEffect(()=> {
     api("/get_all_schedules", {"schedule_date": scheduleDate, "studio_id": studioId}, function(backend_output){
       if("error" in backend_output){
         alert(backend_output.error)
       }
       else{
-        console.log("/get_all_studios=== ",backend_output.results )
+        console.log("/get_all_schedules=== ",backend_output.results )
         setScheduleList(backend_output.results)
       } 
     })
+    
   },[])
 
 	return (

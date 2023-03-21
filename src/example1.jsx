@@ -3,9 +3,6 @@ import {Header} from './header';
 import React from 'react';
 import {api} from './library';
 
-const today = dayjs();
-const yesterday = dayjs().subtract(1, 'day');
-const todayStartOfTheDay = today.startOf('day');
 
 function Example1() {
   const [name, setName] = React.useState("A")

@@ -123,12 +123,11 @@ export function Row({row}) {
           )}
         </TableCell>
         <TableCell  align="center" scope="row">   
-          {address}
-          {/* {!isUpdate && (
-            
-            {address}
-          )} */}
-          {/* // JSON.stringify(address) */}
+           {/* // JSON.stringify(address) */}
+          {!isUpdate && (  
+            <>{address}</>
+          )}
+         
           {isUpdate && (
             <TextField  label="Address" type="text" name="name" value={address} onChange={(e)=> setAddress(e.target.value)} />           
           )}

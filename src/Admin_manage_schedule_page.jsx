@@ -34,43 +34,22 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-export function AddSchedule(){
+ export function AddSchedule({scheduleTypeList , trainerList, studioId, scheduleDate}){
 	const [scheduleName, setScheduleName]= React.useState("")
   const [startTime, setStartTime]= React.useState("")
   const [endTime, setEndTime]= React.useState("") 
-  const [scheduleDate, setScheduleDate] = React.useState("")
-  const [studioId, setStudioId]= React.useState(0)
   const [trainerName, setTrainerName]= React.useState("")
   const [scheduleType, setScheduleType]= React.useState("")
-  const [scheduleTypeList, setScheduleTypeList]= React.useState([])
-
- 
-
-
-  React.useEffect(()=> {
-    api("/get_all_schedule_type", {}, function(backend_output){
-      if("error" in backend_output){
-        alert(backend_output.error)
-      }
-      else{
-        console.log("/get_all_schedules=== ",backend_output.results )
-        setScheduleTypeList(backend_output.results)
-      } 
-    })
-  },[])
-	
+  // const [scheduleTypeList, setScheduleTypeList]= React.useState([])
+  
   const adminAddNewSchedule = function(){	
 		api("/add_schedule", {name:scheduleName, start_time:startTime, end_time:endTime, schedule_date:scheduleDate, studio_id:studioId, trainer:trainerName, schedule_type:scheduleType}, 
 			function(backend_output){
-
-			console.log("backend_output=",backend_output )
 			if("error" in backend_output) {
 				alert(backend_output.error)
 				console.log(backend_output.error)
 			}
-			else{
-				console.log("add_schedule.===",backend_output )
-				
+			else{				
 			}
 		})
 	}
@@ -93,11 +72,27 @@ export function AddSchedule(){
                     <TextField fullWidth label="Schedule Name" type="text" name="name" value={scheduleName} onChange={(e)=> setScheduleName(e.target.value)} />
                   </div>
                   <div style={{"margin":"20px"}}>
-                    <TextField fullWidth label="Trainer Name" type="text" name="name" value={trainerName} onChange={(e)=> setTrainerName(e.target.value)} />
+                    <div className='textal' style={{"width":"100%"}} >
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-select-small">Trainer Name</InputLabel>
+                        <Select
+                          labelId="demo-select-small"
+                          id="demo-select-small"
+                          value={trainerName}
+                          label="Trainer"
+                          onChange={(e) => setTrainerName(e.target.value)}
+                        >  
+                          {trainerList.map((x) => (
+                            <MenuItem className='answertype' value={x.name} >
+                               {/* {JSON.stringify(x)} */}
+                               {x.name}      
+                            </MenuItem>
+                          ))}                          
+                        </Select>
+                      </FormControl>
+                    </div>  
                   </div>
                   <div style={{"margin":"20px"}}>
-                    {/* <TextField fullWidth label="Schedule Type" type="text" name="name" value={scheduleType} onChange={(e)=> setScheduleType(e.target.value)} /> */}
-
                     <div className='textal' style={{"width":"100%"}} >
                       <FormControl fullWidth>
                         <InputLabel id="demo-select-small">Schedule Type</InputLabel>
@@ -109,29 +104,20 @@ export function AddSchedule(){
                           onChange={(e) => setScheduleType(e.target.value)}
                         >  
                           {scheduleTypeList.map((x) => (
-                            <MenuItem className='answertype' value={"FREE"} >{x}</MenuItem>
-                          ))}
-                         
-                          
+                            <MenuItem className='answertype' value={x.name} >
+                               {/* {JSON.stringify(x)} */}
+                              {x.name} 
+                            </MenuItem>
+                          ))}                          
                         </Select>
                       </FormControl>
                     </div>
-
-
-
-
-                  </div>
-                  <div style={{"margin":"20px"}}>
-                    <TextField fullWidth label="Studio Id" type="number" name="name" value={studioId} onChange={(e)=> setStudioId(e.target.value)} />
-                  </div>
+                  </div>            
                   <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
-                    <TextField style={{"width":"95%"}}  type="datetime-local" label="schedule Date" value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} /> 
+                    <TextField style={{"width":"95%"}}  type="time" label=" Starting Time " value= {startTime} onChange={(e)=>setStartTime(e.target.value)} /> 
                   </div>
-                  <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
-                    <TextField style={{"width":"95%"}}  type="datetime-local" label=" Starting Time " value= {startTime} onChange={(e)=>setStartTime(e.target.value)} /> 
-                  </div>
-                  <div className='boxs imagewidth textac'>
-                    <TextField  style={{"width":"95%"}} type="datetime-local" label="Ending Time " value={endTime} onChange={(e)=>setEndTime(e.target.value)} />    
+                  <div className='mt20 mb20 ml20 mr20 textal'>
+                    <TextField  style={{"width":"95%"}} type="time" label="Ending Time " value={endTime} onChange={(e)=>setEndTime(e.target.value)} />    
                   </div>   
                   <div className='textal p20'>
                     <Button variant="contained" disableElevation onClick={adminAddNewSchedule}>
@@ -146,15 +132,14 @@ export function AddSchedule(){
           </Grid>
         </Box>
         
-      </div>
-			
+      </div>	
 		</div>
 	);
 }
 
-
-export function Row({row}) {
-  const [studioId, setStudiosId]= React.useState(row.id)
+export function Row({row, scheduleTypeList, trainerList}) {
+  const [id, setId]= React.useState(row.id)
+  const [studioId, setStudiosId]= React.useState(row.studio_id)
   const [scheduleName, setScheduleName]= React.useState(row.name)
   const [startTime, setStartTime]= React.useState(row.start_time)
   const [endTime, setEndTime]= React.useState(row.end_time) 
@@ -166,7 +151,7 @@ export function Row({row}) {
 
   
   const update_schedule = function(){	
-    api("/update_schedule", {name:scheduleName, start_time:startTime, end_time:endTime, schedule_date:scheduleDate, studio_id:studioId, trainer:trainerName, schedule_type:scheduleType}, 
+    api("/update_schedule", {id :id, name:scheduleName, start_time:startTime, end_time:endTime, schedule_date:scheduleDate, studio_id:studioId, trainer:trainerName, schedule_type:scheduleType}, 
       function(backend_output){
       console.log("backend_output=",backend_output )
       if("error" in backend_output) {
@@ -175,13 +160,12 @@ export function Row({row}) {
       }
       else{ 
         setIsUpdate(false)
-        console.log("studio updated.===",backend_output )
       }
     })
   }
 
   const delete_schedule = function(){	
-    api("/delete_schedule", {id:studioId }, function(backend_output){
+    api("/delete_schedule", {id:id }, function(backend_output){
       console.log("backend_output=",backend_output )
       if("error" in backend_output) {
         alert(backend_output.error)
@@ -189,8 +173,6 @@ export function Row({row}) {
       }
       else{
         setIsDeleted(true)
-        console.log("studio updated.===",backend_output )
-        console.log("setIsUpdate===",isUpdate )
       }
     })
   }
@@ -213,7 +195,7 @@ export function Row({row}) {
         </TableCell>  
         <TableCell  align="center" scope="row">
           {!isUpdate && (
-              {scheduleName}
+              <>{scheduleName}</>
           )}
           {isUpdate && (
             <TextField  label="Schedule Name" type="text" name="name" value={scheduleName} onChange={(e)=> setScheduleName(e.target.value)} />           
@@ -221,31 +203,49 @@ export function Row({row}) {
         </TableCell>
         <TableCell  align="center" scope="row">
           {!isUpdate && (
-            {trainerName}
+            <>{trainerName}</>
           )}
           {isUpdate && (
-            <TextField  label="Trainer Name" type="text" name="name" value={trainerName} onChange={(e)=> setTrainerName(e.target.value)} />           
+            <div className='textal' style={{"width":"100%"}} >
+              <FormControl fullWidth>
+                <InputLabel id="demo-select-small">Trainer Name</InputLabel>
+                <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={trainerName}
+                  label="Trainer"
+                  onChange={(e) => setTrainerName(e.target.value)}
+                >  
+                  {trainerList.map((x) => (
+                    <MenuItem className='answertype' value={x.name} >
+                        {/* {JSON.stringify(x)} */}
+                        {x.name}      
+                    </MenuItem>
+                  ))}                          
+                </Select>
+              </FormControl>
+            </div>      
           )}
         </TableCell>
         <TableCell  align="center" scope="row">
           {!isUpdate && (
-            {scheduleDate}
+            <>{scheduleDate}</>
           )}
           {isUpdate && (
-            <TextField style={{"width":"95%"}}  type="datetime-local" label="Schedule Date" value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} />         
+            <TextField style={{"width":"95%"}}  type="date" label="Schedule Date" value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} />         
           )}
         </TableCell>
         <TableCell  align="center" scope="row">
           {!isUpdate && (
-              {startTime}
+              <>{startTime}</>
           )}
           {isUpdate && (
-            <TextField style={{"width":"95%"}}  type="datetime-local" label=" Starting Time " value= {startTime} onChange={(e)=>setStartTime(e.target.value)} />           
+            <TextField style={{"width":"95%"}}  type="time" label=" Starting Time " value= {startTime} onChange={(e)=>setStartTime(e.target.value)} />           
           )}
         </TableCell>
         <TableCell  align="center" scope="row"> 
           {!isUpdate && (
-            {studioId}
+            <>{studioId}</>
           )}
           {isUpdate && (
             <TextField fullWidth label="Studio Id" type="number" name="name" value={studioId} onChange={(e)=> setStudiosId(e.target.value)} />         
@@ -253,18 +253,36 @@ export function Row({row}) {
         </TableCell>
         <TableCell  align="center" scope="row">
           {!isUpdate && (
-            {scheduleType}
+            <>{scheduleType}</>
           )}
           {isUpdate && (
-             <TextField fullWidth label="Schedule Type" type="text" name="name" value={scheduleType} onChange={(e)=> setScheduleType(e.target.value)} />           
+             <div className='textal' style={{"width":"100%"}} >
+              <FormControl fullWidth>
+                <InputLabel id="demo-select-small">Schedule Type</InputLabel>
+                <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={scheduleType}
+                  label="Schedule Type"
+                  onChange={(e) => setScheduleType(e.target.value)}
+                >  
+                  {scheduleTypeList.map((x) => (
+                    <MenuItem className='answertype' value={x.name} >
+                        {/* {JSON.stringify(x)} */}
+                      {x.name} 
+                    </MenuItem>
+                  ))}                          
+                </Select>
+              </FormControl>
+            </div>
           )} 
         </TableCell>
         <TableCell  align="center" scope="row">
           {!isUpdate && (
-              {endTime}
+              <>{endTime}</>
           )}
           {isUpdate && (
-            <TextField  style={{"width":"95%"}} type="datetime-local" label="Ending Time " value={endTime} onChange={(e)=>setEndTime(e.target.value)} />           
+            <TextField  style={{"width":"95%"}} type="time" label="Ending Time " value={endTime} onChange={(e)=>setEndTime(e.target.value)} />           
           )} 
         </TableCell>
         <TableCell  align="center" scope="row"> 
@@ -276,13 +294,13 @@ export function Row({row}) {
           <DeleteForeverIcon onClick={delete_schedule} /> 
         </TableCell>
       </TableRow>
-      )}
+      )} 
     </>
   ) 
 }
 
 
-export function BasicTable({scheduleList}) { 
+export function BasicTable({scheduleList, scheduleTypeList, trainerList}) { 
   
   return (
     <TableContainer component={Paper}>
@@ -304,11 +322,11 @@ export function BasicTable({scheduleList}) {
 
           </TableRow>
         </TableHead>
-        {/* {JSON.stringify(teachersList)}
-            <br/> */}
+        {/* {JSON.stringify(scheduleList)} */}
+            <br/>
         <TableBody>
           {scheduleList.map((row) => (
-            <Row row={row} scheduleList={scheduleList} />
+            <Row row={row} scheduleTypeList={scheduleTypeList} trainerList={trainerList}  />
           ))}
         </TableBody>
       </Table>
@@ -319,10 +337,18 @@ export function BasicTable({scheduleList}) {
 
 function AdminManageSchedulePage(){
   const [scheduleList, setScheduleList]= React.useState([])
-  const [studioId, setStudiosId]= React.useState(3)
+  const [studioId, setStudiosId]= React.useState(0)
   const [scheduleDate, setScheduleDate]= React.useState("")
-    
-	React.useEffect(()=> {
+  const [scheduleTypeList, setScheduleTypeList]= React.useState([])
+  const [trainerList, setTrainerList]= React.useState([])
+  const [studiosList, setStudiosList]= React.useState([])
+
+  const scheduleDateStudioIdget_all_schedules =function(){
+    setScheduleDate(scheduleDate)
+    setStudiosId(studioId)
+    console.log("/scheduleDateStudioIdget_all_schedules=== ",scheduleDate )
+    console.log("/scheduleDateStudioIdget_all_schedules=== ",studioId )
+
     api("/get_all_schedules", {"schedule_date": scheduleDate, "studio_id": studioId}, function(backend_output){
       if("error" in backend_output){
         alert(backend_output.error)
@@ -332,8 +358,37 @@ function AdminManageSchedulePage(){
         setScheduleList(backend_output.results)
       } 
     })
+  }
+	
+  React.useEffect(()=> {
     
+    api("/get_all_schedule_types", {}, function(backend_output){
+      if("error" in backend_output){
+        alert(backend_output.error)
+      }
+      else{
+        setScheduleTypeList(backend_output.results)
+      } 
+    })
+    api("/get_all_trainers", {}, function(backend_output){
+      if("error" in backend_output){
+        alert(backend_output.error)
+      }
+      else{
+        setTrainerList(backend_output.results)
+      } 
+    })
+    api("/get_all_studios", {}, function(backend_output){
+      if("error" in backend_output){
+        alert(backend_output.error)
+      }
+      else{
+        setStudiosList(backend_output.results)
+      } 
+    })
+
   },[])
+	
 
 	return (
     <>
@@ -341,16 +396,41 @@ function AdminManageSchedulePage(){
         <ResponsiveAppBar/>
         <div className='pl20 pt10 mt20 hsplit '>
           <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
-            <TextField style={{"width":"95%"}}  type="datetime-local" label="schedule Date" value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} /> 
+            <TextField style={{"width":"95%"}}  type="date" label="schedule Date" value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} /> 
           </div>
+          <div className='mt20 mb20 ml20 mr20 textal'>
+            <div className='bsr1' >
+              <FormControl >
+                <InputLabel id="demo-select-small">Studio Id</InputLabel>
+                <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={studioId}
+                  label="Schedule Type"
+                  onChange={(e) => setStudiosId(e.target.value)}
+                >  
+                  {studiosList.map((x) => (
+                    <MenuItem className='answertype' value={x.id} >
+                        {/* {JSON.stringify(x)} */}
+                        {x.name},,,,,,,{x.id}
+                    </MenuItem>
+                  ))}                          
+                </Select>
+              </FormControl>
+            </div>
+          </div>
+
+          <div className=''>  
+            <Button variant="contained" size="large" onClick={scheduleDateStudioIdget_all_schedules} >save schedule date and id</Button>  
+          </div> 
           <div className=''>  
             <Button variant="contained" size="large" >Add New schedule</Button>  
           </div>         
         </div>
-        <AddSchedule/>
+        <AddSchedule scheduleDate={scheduleDate}  studioId={studioId} scheduleTypeList={scheduleTypeList} trainerList={trainerList}/>
         <div className='p2030' style={{}}>
           <div className='themecolor2 p20 fs25 bseee1'>All schedules</div>
-          <BasicTable scheduleList={scheduleList} />
+          <BasicTable scheduleList={scheduleList} scheduleTypeList={scheduleTypeList} trainerList={trainerList} />
           
         </div>
       </div>

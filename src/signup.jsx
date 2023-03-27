@@ -36,7 +36,6 @@ function Signup() {
 			console.log("backend_output=",backend_output )
 			if("error" in backend_output) {
 				alert(backend_output.error)
-				console.log("backend_output.error=", backend_output.error)
 			}
 			else{
 				console.log("sign up successful==",backend_output)

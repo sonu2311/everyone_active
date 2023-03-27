@@ -16,6 +16,7 @@ import AdminTrainersAndScheduleTypePage from './Admin_trainers_and_schedule_type
 import AdminManageSchedulePage from './Admin_manage_schedule_page';
 import PricePlanPage from './Price_plan_page';
 import MembershipJoinPage from './Membership_join_page';
+import ScheduleBookingPage from './Schedule_Booking_Page';
 
 function MainFunc() {
   return (
@@ -39,6 +40,8 @@ function MainFunc() {
           <Route path="/Admin_manage_schedule_page" element={<AdminManageSchedulePage/>} />
           <Route path="/Price_plan_page" element={<PricePlanPage/>} />
           <Route path="/Membership_join_page/:id" element={<MembershipJoinPage/>} />
+          <Route path="/Schedule_Booking_Page" element={<ScheduleBookingPage/>} />
+          
           <Route path="*" element={<h1>Invalid</h1>} />
         </Route>
       </Routes>

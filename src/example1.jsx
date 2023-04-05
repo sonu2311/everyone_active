@@ -51,34 +51,38 @@ function Signup() {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item  md={2} lg={2} > 
-              <div className='hide-xs hide-sm  show-md show-lg '>
+              {/* <div className='hide-xs hide-sm  show-md show-lg '>
                 <img alt="" style={{"width":"100%"}} src='images/image10.jpg'/>
-              </div>
+              </div> */}
             </Grid>
             <Grid item xs={12} sm={12}  md={8} lg={8}>
                 <div className='mt5 pl15 pr15  boxs  '>
                   <div>
                     <img alt="" style={{"width":"100%"}} src='images/image13.png'/>
                   </div>
-                  <div className='login_header2 ' style={{}}>
-                    Signup
-                  </div> 
-                  <div className='boxs  pb15'>
-                    <div style={{"margin":"20px"}}>
-                      <TextField fullWidth label="Name" type="text" name="name" value={name} onChange={(e)=> setName(e.target.value)} />
-                    </div>
-                    <div style={{"margin":"20px"}}>
-                      <TextField fullWidth label="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
-                    </div>
-                    <div style={{"margin":"20px"}}>
-                      <TextField fullWidth label="Password" type="password" name="password" value={password} onChange={(e)=> setPassword(e.target.value)} onKeyUp={e => { if(e.key == 'Enter') {sign_up()} }} />
-                    </div>
-                    <div className='m20'>
-                      <Button variant="contained" disableElevation onClick={sign_up} style={{"padding":"8px 10px",  "fontSize":"18px",}}>
+                  <div className='mt-2'>
+                    <div className='bseee1 card'>
+                      <div className='login_header2 br5' style={{}}>
                         Signup
-                      </Button>
+                      </div> 
+                      <div className='boxs  pb15'>
+                        <div style={{"margin":"20px"}}>
+                          <TextField fullWidth label="Name" type="text" name="name" value={name} onChange={(e)=> setName(e.target.value)} />
+                        </div>
+                        <div style={{"margin":"20px"}}>
+                          <TextField fullWidth label="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                        </div>
+                        <div style={{"margin":"20px"}}>
+                          <TextField fullWidth label="Password" type="password" name="password" value={password} onChange={(e)=> setPassword(e.target.value)} onKeyUp={e => { if(e.key == 'Enter') {sign_up()} }} />
+                        </div>
+                        <div className='m20'>
+                          <Button variant="contained" disableElevation onClick={sign_up} style={{"padding":"8px 10px",  "fontSize":"18px",}}>
+                            Signup
+                          </Button>
+                        </div>
+                      </div> 
                     </div>
-                  </div>  
+                  </div> 
                 </div>   
             </Grid>
             <Grid item  md={2} lg={2} > 

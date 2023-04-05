@@ -29,6 +29,9 @@ body {
   background-color: #cccccc;
 } */
 
+.bckgr{
+  background-color: #333;
+}
 
 
 .top_box {
@@ -643,6 +646,21 @@ a:hover {
 .forward:hover{
   background-color: #eee;
 }
+.p4070{
+  padding: 40px 70px;
+}
+
+
+.booking_table_background_color{
+  border: solid #eee 1px;
+  background-color: #eee;
+}
+
+.booking_table_header{
+  background-color: #333;
+  color: #fff;
+  border: solid #eee 1px;
+}
 
 /* height:"40px", width:"40px", borderRadius:"50%"} */
 .fs50{
@@ -668,6 +686,9 @@ a:hover {
 }
 .pb50{
   padding-bottom: 50px;
+}
+.pb10{
+  padding-bottom: 10px;
 }
 .pr70{
   padding-right: 70px;

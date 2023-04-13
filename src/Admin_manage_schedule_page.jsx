@@ -23,6 +23,24 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import Modal from "@mui/material/Modal";
+
+
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #eee",
+  boxShadow: 24,
+  pt: 1,
+  px: 2,
+  pb: 1,
+  borderRadius: 1
+};
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -60,18 +78,16 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
       <div style={{"marginTop": "10px"}}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
-            <Grid item xs={1} sm={1} md={3} lg={3}> 
-            </Grid>
-            <Grid item xs={10} sm={10} md={6} lg={6}>
+            <Grid item xs={11} sm={11} md={7} lg={7}>
                 <div className='login_header2 ' style={{}}>
                   Add New studio
                 </div>
               <Item>  
-              <div style={{"padding":"15px"}}>
-                  <div style={{"margin":"20px"}}>
+              <div className='m20'>
+                  <div className='mt20 mb20' >
                     <TextField fullWidth label="Schedule Name" type="text" name="name" value={scheduleName} onChange={(e)=> setScheduleName(e.target.value)} />
                   </div>
-                  <div style={{"margin":"20px"}}>
+                  <div className='mt20 mb20'  >
                     <div className='textal' style={{"width":"100%"}} >
                       <FormControl fullWidth>
                         <InputLabel id="demo-select-small">Trainer Name</InputLabel>
@@ -92,7 +108,7 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
                       </FormControl>
                     </div>  
                   </div>
-                  <div style={{"margin":"20px"}}>
+                  <div className='mt20 mb20' >
                     <div className='textal' style={{"width":"100%"}} >
                       <FormControl fullWidth>
                         <InputLabel id="demo-select-small">Schedule Type</InputLabel>
@@ -113,13 +129,13 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
                       </FormControl>
                     </div>
                   </div>            
-                  <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
-                    <TextField style={{"width":"95%"}}  type="time" label=" Starting Time " value= {startTime} onChange={(e)=>setStartTime(e.target.value)} /> 
+                  <div className='mt20 mb20 textal' style={{}}>
+                    <TextField style={{"width":"100%"}}  type="time" label=" Starting Time " value= {startTime} onChange={(e)=>setStartTime(e.target.value)} /> 
                   </div>
-                  <div className='mt20 mb20 ml20 mr20 textal'>
-                    <TextField  style={{"width":"95%"}} type="time" label="Ending Time " value={endTime} onChange={(e)=>setEndTime(e.target.value)} />    
+                  <div className='mt20 mb20  textal'>
+                    <TextField  style={{"width":"100%"}} type="time" label="Ending Time " value={endTime} onChange={(e)=>setEndTime(e.target.value)} />    
                   </div>   
-                  <div className='textal p20'>
+                  <div className='textal mt20'>
                     <Button variant="contained" disableElevation onClick={adminAddNewSchedule}>
                     Add New Schedule
                     </Button>
@@ -127,11 +143,8 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
                 </div>  
               </Item>
             </Grid>
-            <Grid item xs={1}  sm={1} md={3} lg={3}>
-            </Grid>
           </Grid>
-        </Box>
-        
+        </Box>  
       </div>	
 		</div>
 	);
@@ -148,6 +161,7 @@ export function Row({row, scheduleTypeList, trainerList}) {
   const [scheduleType, setScheduleType]= React.useState(row.schedule_type)
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   
   const update_schedule = function(){	
@@ -163,6 +177,22 @@ export function Row({row, scheduleTypeList, trainerList}) {
       }
     })
   }
+
+
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
+
+  const delete_schedule_in_row = () => {
+    delete_schedule(id)
+    handleClose()
+    setIsDeleted(true)
+  };
 
   const delete_schedule = function(){	
     api("/delete_schedule", {id:id }, function(backend_output){
@@ -188,12 +218,12 @@ export function Row({row, scheduleTypeList, trainerList}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="large" onClick={studio_edit_input_on} >
+        <TableCell  align="left" scope="row"> 
+          <Button variant="contained" size="small" onClick={studio_edit_input_on} >
             edit
           </Button> 
         </TableCell>  
-        <TableCell  align="center" scope="row">
+        <TableCell  align="left" scope="row">
           {!isUpdate && (
               <>{scheduleName}</>
           )}
@@ -286,12 +316,34 @@ export function Row({row, scheduleTypeList, trainerList}) {
           )} 
         </TableCell>
         <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="large" onClick={update_schedule} >
+          <Button variant="contained" size="small" onClick={update_schedule} >
             Save
           </Button> 
         </TableCell>
         <TableCell  align="center">
-          <DeleteForeverIcon onClick={delete_schedule} /> 
+          <DeleteForeverIcon onClick={handleOpen} />
+          <div className=''>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="parent-modal-title"
+              aria-describedby="parent-modal-description"
+            >
+              <div className=''>
+                <Box sx={{ ...style, width: 400, "& button": { m: 10 } }} >
+                  <div className='color333'>Do you really want to delete this schedule ?</div> 
+                    <div className='hsplit '>
+                      <div className='pt10 pb10 pr20 cursor fw700'  onClick={delete_schedule_in_row}    >
+                        Yes
+                      </div>
+                      <div className='pt10 pb10 pl20 cursor fw700 ' onClick={handleClose}>
+                        No
+                      </div>
+                    </div>
+                </Box>
+              </div>
+            </Modal>
+          </div>            
         </TableCell>
       </TableRow>
       )} 
@@ -307,27 +359,29 @@ export function BasicTable({scheduleList, scheduleTypeList, trainerList}) {
       <Table sx={{ }} >
         <TableHead>
           <TableRow>
-            <TableCell align="center">
+            <TableCell align="left">
               <EditIcon/>
               </TableCell>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center" >Trainer Name</TableCell>
-            <TableCell align="center" >schedule Date</TableCell>
-            <TableCell align="center">Starting Time</TableCell> 
-            <TableCell align="center" >studioId</TableCell>
-            <TableCell align="center" >Schedule Type</TableCell>
-            <TableCell align="center" >Ending Time</TableCell>
-            <TableCell align="center">Save</TableCell> 
-            <TableCell align="center">-</TableCell> 
+            <TableCell align="left" style={{"fontWeight":"700"}}>Name</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Trainer Name</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Schedule Date</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}}>Starting Time</TableCell> 
+            <TableCell align="center" style={{"fontWeight":"700"}} >Studio Id</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Schedule Type</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Ending Time</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Save</TableCell> 
+            <TableCell align="center" style={{"fontWeight":"700"}} >-</TableCell> 
 
           </TableRow>
         </TableHead>
         {/* {JSON.stringify(scheduleList)} */}
             <br/>
         <TableBody>
+          <>
           {scheduleList.map((row) => (
             <Row row={row} scheduleTypeList={scheduleTypeList} trainerList={trainerList}  />
           ))}
+         </>
         </TableBody>
       </Table>
     </TableContainer>
@@ -394,14 +448,11 @@ function AdminManageSchedulePage(){
     <>
       <div >
         <ResponsiveAppBar/>
-        <div className='pl20 pt10 mt20 hsplit '>
-          <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
-            <TextField style={{"width":"95%"}}  type="date" label="schedule Date" value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} /> 
-          </div>
-          <div className='mt20 mb20 ml20 mr20 textal'>
-            <div className='bsr1' >
-              <FormControl >
-                <InputLabel id="demo-select-small">Studio Id</InputLabel>
+        <div className='pt15 mt20 hsplit boxs '>  
+          <div className='ml30 mr20 ' style={{width:"calc(100% - 93%)"}}>
+            <div className='' >
+              <FormControl fullWidth >
+                <InputLabel id="demo-select-small"  className=''>Studio Id</InputLabel>
                 <Select
                   labelId="demo-select-small"
                   id="demo-select-small"
@@ -419,19 +470,25 @@ function AdminManageSchedulePage(){
               </FormControl>
             </div>
           </div>
-
-          <div className=''>  
-            <Button variant="contained" size="large" onClick={scheduleDateStudioIdget_all_schedules} >save schedule date and id</Button>  
+          <div className='hsplit'>
+            <div className='mr20' >
+              <TextField label="schedule Date" type="date" color="secondary" focused value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} />
+            </div>
+            <div className='ml20 mt12'>  
+              <Button variant="contained" size="large" onClick={scheduleDateStudioIdget_all_schedules} >Show</Button>  
+            </div>
           </div> 
-          <div className=''>  
+          {/* <div className='mr20'>  
             <Button variant="contained" size="large" >Add New schedule</Button>  
-          </div>         
+          </div>          */}
         </div>
-        <AddSchedule scheduleDate={scheduleDate}  studioId={studioId} scheduleTypeList={scheduleTypeList} trainerList={trainerList}/>
         <div className='p2030' style={{}}>
           <div className='themecolor2 p20 fs25 bseee1'>All schedules</div>
-          <BasicTable scheduleList={scheduleList} scheduleTypeList={scheduleTypeList} trainerList={trainerList} />
-          
+          <BasicTable scheduleList={scheduleList} scheduleTypeList={scheduleTypeList} trainerList={trainerList} />  
+        </div>
+
+        <div className='mb50 boxs pl30 ' >
+          <AddSchedule scheduleDate={scheduleDate}  studioId={studioId} scheduleTypeList={scheduleTypeList} trainerList={trainerList}/>
         </div>
       </div>
       </>

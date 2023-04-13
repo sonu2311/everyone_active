@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import {SessionContext} from './library';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -48,46 +49,70 @@ export function PricePlanPage(){
 	return (
 		<div>
 			<ResponsiveAppBar/>
-      <div style={{"marginTop": "100px"}}>
+      <div style={{"marginTop": "70px"}}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
-            <Grid item xs={1} sm={1} md={3} lg={3}> 
+            <Grid item  md={1} lg={1}> 
             </Grid>
-            <Grid item xs={10} sm={10} md={6} lg={6}>
-                <div className='login_header2 ' style={{}}>
-                  Add New studio
+            <Grid item xs={12} sm={12} md={10} lg={10}>
+                <div className='login_header2 ml20 mr20 br2 fs25' style={{}}>
+                  All Price Plan
                 </div>
-                {/* pricePlanList===={JSON.stringify(pricePlanList)} */}
-              <Item>  
-              <div style={{"padding":"15px"}}>
-                {pricePlanList.map((x)=>(
-                  <>
-                    <div className='card'>
-                      {JSON.stringify(x)}
-                      {!IsLogin && (
-                        <a className='' href="#/login/">
-                          <Button
-                          variant="contained" disableElevation>
-                            Join
-                          </Button>
-                        </a>
-                      )}
-                      {IsLogin && (
-                        <a className='' href={"#/Membership_join_page/"+x.id} 
-                        >
-                          <Button
-                          variant="contained" disableElevation>
-                            Join mem
-                          </Button>
-                        </a>
-                      )}
-                    </div>
-                  </>
-                ))}     
-              </div>  
-              </Item>
+                <div className=' boxs' style={{}}>     
+                  <Grid container >
+                    {pricePlanList.map((x)=>( 
+                      <Grid xs={12} sm={12} md={4} lg={4}> 
+                          <div className=' boxs m20 '>  
+                            <div className='card'  >
+                              <div className='textal' style={{}}>
+                                <p className='textal'>
+                                Name Of Plan : {x.name}
+                                </p>
+                                <p className='textal'>
+                                  Price :{x.price}<CurrencyRupeeIcon className='' style={{"fontSize":"15px"}}/>   
+                                </p>
+                                
+                                <p className='textal'>
+                                Payment Frequency : {x.payment_frequency}
+                                </p>
+                                <p className='textal'>
+                                Expiry Duration : {x.expiry_duration}
+                                </p>
+                                <p className=' textal'>
+                                Expiry Duration Unit : {x.expiry_duration_unit}
+                                </p>
+                              </div>
+                              <div>
+                                {!IsLogin && (
+                                  <div>
+                                    <a className='' href="#/login/">
+                                      <Button size="small"
+                                      variant="contained" disableElevation>
+                                       Join
+                                      </Button>
+                                    </a>
+                                  </div>           
+                                )}
+                                {IsLogin && (
+                                  <div>
+                                    <a className='' href={"#/Membership_join_page/"+x.id} 
+                                    >
+                                      <Button size="small"
+                                      variant="contained" disableElevation>
+                                        Join
+                                      </Button>
+                                    </a>
+                                  </div>                           
+                                  )}
+                              </div>
+                            </div>  
+                          </div>
+                      </Grid>  
+                    ))}
+                  </Grid>
+                </div>
             </Grid>
-            <Grid item xs={1}  sm={1} md={3} lg={3}>
+            <Grid item  md={1} lg={1}>
             </Grid>
           </Grid>
         </Box>

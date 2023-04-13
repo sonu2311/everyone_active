@@ -23,6 +23,26 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import Modal from "@mui/material/Modal";
+
+
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #eee",
+  boxShadow: 24,
+  pt: 1,
+  px: 2,
+  pb: 1,
+  borderRadius: 1
+};
+
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -35,6 +55,91 @@ const Item = styled(Paper)(({ theme }) => ({
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
+function AddStudio(){
+	const [studiosName, setStudiosName]= React.useState("")
+  const [address, setAddress]= React.useState("")
+  const [capacity, setCapacity]= React.useState("") 
+  const [files, setFiles] = React.useState([])
+  const [picture, setPicture]= React.useState("")
+  
+	
+  const adminAddNewStudio = function(){	
+		api("/add_studio", {name:studiosName, address:address, capacity:capacity,picture:picture }, 
+			function(backend_output){
+			console.log("backend_output=",backend_output )
+			if("error" in backend_output) {
+				alert(backend_output.error)
+				console.log(backend_output.error)
+			}
+			else{
+				console.log("studio added.===",backend_output )
+				window.location.href = "#/Admin_manage_studio"
+			}
+		})
+	}
+
+  const uploadFile = function(file) {
+    if (!file) return;
+    var reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = function() {
+      var file_content = reader.result
+      api('/upload_file',
+        {
+          "file_content": file_content,
+          "filename": file.name
+        },
+        function(backend_output){
+          setPicture(backend_output.uploaded_filename)
+        });
+    }
+  }
+	return (
+		<div>
+			<ResponsiveAppBar/>
+      <div style={{}}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container >
+            <Grid item xs={11} sm={11} md={7} lg={7}>
+                <div className='login_header2 ' style={{}}>
+                  Add New studio
+                </div>
+              <Item>  
+              <div style={{"padding":"15px"}}>
+                  <div style={{"margin":"20px"}}>
+                    <TextField fullWidth label="Studios Name" type="text" name="name" value={studiosName} onChange={(e)=> setStudiosName(e.target.value)} />
+                  </div>
+                  <div style={{"margin":"20px"}}>
+                    <TextField fullWidth label="Address" type="text" name="name" value={address} onChange={(e)=> setAddress(e.target.value)} />
+                  </div>
+                  <div style={{"margin":"20px"}}>
+                    <TextField fullWidth label="Capacity" type="number" name="name" value={capacity} onChange={(e)=> setCapacity(e.target.value)} />
+                  </div>
+                  <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
+                    <input type="file"
+                      onChange={(e) => uploadFile(e.target.files[0])} />
+                  </div>
+                  <div className='boxs imagewidth textac'>
+                    {picture.length>0 &&(
+                      <img style={{ width: '150px', verticalAlign: 'middle'}} 
+                      src={picture} />
+                    )} 
+                  </div>   
+                  <div className='textal mr20 ml20 mt20'>
+                    <Button variant="contained" disableElevation onClick={adminAddNewStudio}>
+                      Add Studio
+                    </Button>
+                  </div>
+                </div>  
+              </Item>
+            </Grid>
+          </Grid>
+        </Box>  
+      </div>	
+		</div>
+	);
+}
+
 export function Row({row}) {
   const [studioId, setStudiosId]= React.useState(row.id)
   const [studiosName, setStudiosName]= React.useState(row.name)
@@ -43,6 +148,7 @@ export function Row({row}) {
   const [picture, setPicture]= React.useState(row.picture)
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
+  const [open, setOpen] = React.useState(false);
    
   console.log("address=============", address)
   const update_studio = function(){	
@@ -60,6 +166,21 @@ export function Row({row}) {
       }
     })
   }
+
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
+
+  const delete_studio_in_row = () => {
+    delete_studio(studioId)
+    handleClose()
+    setIsDeleted(true)
+  };
 
   const delete_studio = function(){	
     api("/delete_studio", {id:studioId }, function(backend_output){
@@ -107,14 +228,14 @@ export function Row({row}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="large" onClick={studio_edit_input_on} >
+        <TableCell  align="left" scope="row"> 
+          <Button variant="contained" size="small" onClick={studio_edit_input_on} >
             edit
           </Button> 
         </TableCell>  
-        <TableCell  align="center" scope="row">
+        <TableCell  align="left" scope="row">
           {!isUpdate && (
-            <a href= {"#/manage_schedule/"+row.id}  >
+            <a href= {"#/Admin_manage_schedule_page/"+row.id}  >
               {studiosName}
             </a>
           )}
@@ -145,7 +266,7 @@ export function Row({row}) {
         </TableCell>
         <TableCell  align="center">
           {!isUpdate && (  
-            <img style={{ width: '150px', verticalAlign: 'middle'}} 
+            <img style={{ width: '50px', verticalAlign: 'middle'}} 
             src={picture} />  
           )}
           {isUpdate && (
@@ -157,12 +278,38 @@ export function Row({row}) {
 
         </TableCell>
         <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="large" onClick={update_studio} >
+          <Button variant="contained" size="small" onClick={update_studio} >
             Save
           </Button> 
         </TableCell>
         <TableCell  align="center">
-          <DeleteForeverIcon onClick={delete_studio} /> 
+          {/* <DeleteForeverIcon onClick={delete_studio} />  */}
+
+
+          <DeleteForeverIcon onClick={handleOpen} />
+
+          <div className=''>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+              >
+                <div className=''>
+                  <Box sx={{ ...style, width: 400, "& button": { m: 10 } }} >
+                    <div className='color333'>Do you really want to delete this studio ?</div> 
+                      <div className='hsplit '>
+                        <div className='pt10 pb10 pr20 cursor fw700'  onClick={delete_studio_in_row}    >
+                          Yes
+                        </div>
+                        <div className='pt10 pb10 pl20 cursor fw700 ' onClick={handleClose}>
+                          No
+                        </div>
+                      </div>
+                  </Box>
+                </div>
+              </Modal>
+            </div>          
         </TableCell>
       </TableRow>
       )}
@@ -179,19 +326,19 @@ export function BasicTable({studiosList}) {
       <Table sx={{ }} >
         <TableHead>
           <TableRow>
-            <TableCell align="center">
+            <TableCell align="left">
               <EditIcon/>
               </TableCell>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center" >Address</TableCell>
-            <TableCell align="center" >capacity</TableCell>
-            <TableCell align="center">Image</TableCell> 
-            <TableCell align="center">Save</TableCell> 
+            <TableCell align="left" style={{"fontWeight":"700"}}>Name</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Address</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >capacity</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Image</TableCell> 
+            <TableCell align="center" style={{"fontWeight":"700"}} >Save</TableCell> 
             <TableCell align="center">-</TableCell> 
 
           </TableRow>
         </TableHead>
-        {/* {JSON.stringify(teachersList)}
+        {/* {JSON.stringify(studiosList)}
             <br/> */}
         <TableBody>
           {studiosList.map((row) => (
@@ -224,22 +371,17 @@ function AdminManageStudio(){
     <>
       <div >
         <ResponsiveAppBar/>
-        <div className='pl20 pt10 mt20 hsplit '>
-          <div className=''>
-            <a href={"#/add_studio" } style={{}}>
-            <Button variant="contained" size="large" >Add New studio</Button>
-            </a>
-          </div>
-          <div className='pl20'>
-            <a href={"#/admin_all_users"} style={{}}>
-              <Button variant="contained" size="large" >All users</Button>
-            </a> 
+        <div className='hsplit mt30 '>
+          <div className='pl30'> 
+            <Button variant="contained" size="large" >Add New studio</Button>  
           </div>
         </div>
-        <div className='p2030' style={{}}>
+        <div className='p2030 boxs' style={{}}>
           <div className='themecolor2 p20 fs25 bseee1'>All studio</div>
-          <BasicTable studiosList={studiosList} />
-          
+          <BasicTable studiosList={studiosList} />  
+        </div>
+        <div className='mb50 boxs pl30 ' >
+          <AddStudio/>
         </div>
       </div>
       </>

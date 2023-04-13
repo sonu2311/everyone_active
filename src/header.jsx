@@ -136,50 +136,92 @@ export function ResponsiveAppBar() {
           
           <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
               {role != "ADMIN" && (
-                <a className='a_deco aoutline show-sm show-xs show-md show-lg' href="#/all_courses">
+                <a className='a_deco aoutline show-sm show-xs show-md show-lg' href="#/Schedule_Booking_Page">
                   <Button
                   sx={{ my: 2, color: 'white', display: 'block' }}>
-                    All Courses
+                   Schedule Booking Page
                   </Button>
                 </a>
               )}
-              {IsLogin && role != "ADMIN" && (
-              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/my_course">
+              {IsLogin  && (
+              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Price_plan_page">
                 <Button
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                 My courses
+                 Price plan page
+                </Button>
+              </a>
+              )}
+              {!IsLogin  && (
+              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Price_plan_page">
+                <Button
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                 Price plan page
                 </Button>
               </a>
               )}
               
               {IsLogin  && role=="ADMIN" &&  (
-              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/admin_all_teachers">
+              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/admin_all_users">
                 <Button
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                  All teachers
+                  Admin all users
                 </Button>
               </a>
               )}
               {IsLogin && role=="ADMIN" && (
-              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/admin_pending_registration_requests_page">
+              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Admin_manage_memberships">
                 <Button
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                 Registration Requests
+                 Admin manage memberships
                 </Button>
               </a>
               )}
               {IsLogin && role=="ADMIN" && (
-                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/admin_all_course">
+                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Admin_manage_studio">
                   <Button
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                  Admin All Course
+                  Admin manage studio
+                  </Button>
+                </a>
+              )}
+              
+              {IsLogin && role=="ADMIN" && (
+                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Admin_trainers_and_schedule_type_page">
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                  Admin trainers and schedule type page
+                  </Button>
+                </a>
+              )}
+
+              {IsLogin && role=="ADMIN" && (
+                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Admin_manage_schedule_page">
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                  Admin manage schedule page
+                  </Button>
+                </a>
+              )}
+
+              {IsLogin && (role=="ADMIN" || role=="STUDIO")  && (
+                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Studio_check_in_page">
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                  Studio checkin page
                   </Button>
                 </a>
               )}
@@ -289,10 +331,10 @@ const MenuTabs = function({session, role, IsLogin}){
       </a>
       )}
       {role !="ADMIN" && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/all_courses">
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Schedule_Booking_Page">
           <MenuItem >
             <Typography textAlign="center">
-            All courses
+            Schedule Booking Page
             </Typography>
           </MenuItem>
         </a>
@@ -313,38 +355,66 @@ const MenuTabs = function({session, role, IsLogin}){
       )}
       
       {IsLogin && role !="ADMIN" && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/my_course">
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Price_plan_page">
           <MenuItem >
             <Typography textAlign="center">
-            My courses
+            Price plan page
             </Typography>
           </MenuItem>
         </a>
       )}
       {IsLogin && role=="ADMIN" && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/admin_all_course">
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/admin_all_users">
           <MenuItem >
             <Typography textAlign="center">
-            Admin All Course
+            admin all users
             </Typography>
           </MenuItem>
         </a>
       )}
+       {IsLogin && (role=="ADMIN" || role=="STUDIO") && (
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Studio_check_in_page">
+          <MenuItem >
+            <Typography textAlign="center">
+            Studio checkin page
+            </Typography>
+          </MenuItem>
+        </a>
+      )}
+
+
       {IsLogin && role=="ADMIN" && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm ' href="#/admin_pending_registration_requests_page">
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm ' href="#/Admin_manage_memberships">
           <MenuItem >
             <Typography textAlign="center" >
-              Registration Requests
+            Admin manage memberships
             </Typography>
           </MenuItem>
         </a>
       )} 
       {IsLogin && role=="ADMIN" && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/admin_all_teachers">
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm ' href="#/Admin_trainers_and_schedule_type_page">
           <MenuItem >
             <Typography textAlign="center" >
-              All Teacher
-            
+            Admin_trainers_and_schedule_type_page
+            </Typography>
+          </MenuItem>
+        </a>
+      )} 
+      {IsLogin && role=="ADMIN" && (
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm ' href="#/Admin_manage_schedule_page">
+          <MenuItem >
+            <Typography textAlign="center" >
+            Admin_manage_schedule_page
+            </Typography>
+          </MenuItem>
+        </a>
+      )} 
+      {IsLogin && role=="ADMIN" && (
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Admin_manage_studio">
+          <MenuItem >
+            <Typography textAlign="center" >
+            Admin manage studio       
             </Typography>
           </MenuItem>
         </a>

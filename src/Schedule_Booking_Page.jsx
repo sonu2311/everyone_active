@@ -242,7 +242,7 @@ export function OneSchedulesDetails({schedulesDetails}) {
   const booking_Reserve= function(scheduleId){
     api("/book_schedule", {"schedule_id": scheduleId}, function(backend_output){
       if("error" in backend_output){
-        alert(backend_output.error)
+        alert(backend_output.error + " You don't have a membership plan. You need to get the membership first")
       }
       else{
         console.log("/book_schedule=== ",backend_output )
@@ -365,18 +365,11 @@ export function SchedulesDetails({row}) {
 }
 
 function ScheduleBookingPage(){
-  const [scheduleList, setScheduleList]= React.useState([])
   const [studioId, setStudiosId]= React.useState(0)
-  const [scheduleDate, setScheduleDate]= React.useState("")
   const [scheduleTypeList, setScheduleTypeList]= React.useState([])
-  const [trainerList, setTrainerList]= React.useState([])
   const [studiosList, setStudiosList]= React.useState([])
-  const [checkboxTrueFalseList, setCheckboxTrueFalseList] = React.useState([])
-  const [studio_id_list, setStudio_id_list]= React.useState([])
-  const [date, setDate]= React.useState("")
   const [schedule_type, setSchedule_type]= React.useState("")
   const [upcomeingscheduleList, setUpcomeingScheduleList]= React.useState([])
-  const [dateList, setDateList]= React.useState([])
   const [daysList, setDaysList]= React.useState([])
 	
   

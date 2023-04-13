@@ -23,6 +23,24 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import Modal from "@mui/material/Modal";
+
+
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #eee",
+  boxShadow: 24,
+  pt: 1,
+  px: 2,
+  pb: 1,
+  borderRadius: 1
+};
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -44,17 +62,6 @@ function AddMembershipPlans(){
   const [files, setFiles] = React.useState([])
   const [paymentFrequency, setPaymentFrequency]= React.useState("")
   const [expiryDurationUnit, setExpiryDurationUnit]= React.useState("")
- 
-//   # An API for admin to add a new membership_plan.
-// #
-// # Sample input: {"name": "Monthly Plan", "price": 3939, "terms_and_conditions": "..",
-// #                "payment_frequency": "MONTHLY", "expiry_duration": 5,
-// #                "expiry_duration_unit": "MONTH"}
-// #
-// # @payment_frequency could be [FREE, ONE_TIME, MONTHLY, YEARLY]
-// # @expiry_duration_unit could be [DAYS, MONTHS, YEARS]
-// #
-// # Output: {"id": 44}
 
 	const adminAddNewMembershipPlans = function(){	
 		api("/add_membership_plan", {name: planName, price:price, terms_and_conditions:description, payment_frequency:paymentFrequency, expiry_duration_unit: expiryDurationUnit, expiry_duration:expiry_duration  }, 
@@ -70,6 +77,10 @@ function AddMembershipPlans(){
 			}
 		})
 	}
+
+  const scroll = function(){
+
+  }
 
   const uploadFile = function(file) {
     if (!file) return;
@@ -90,19 +101,17 @@ function AddMembershipPlans(){
 	return (
 		<div>
 			<ResponsiveAppBar/>
-      <div style={{"marginTop": "100px"}}>
+      <div style={{}}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
-            <Grid item xs={1} sm={1} md={3} lg={3}> 
-            </Grid>
-            <Grid item xs={10} sm={10} md={6} lg={6}>
-                <div className='login_header' style={{}}>
-                  Add Membership Plan
-                </div>
-               
-                
+            {/* <Grid item xs={1} sm={1} md={3} lg={3}> 
+            </Grid> */}
+            <Grid item xs={11} sm={11} md={7} lg={7}>
+                <div className='login_header2' style={{}}>
+                  Add New Membership Plan
+                </div>                            
               <Item>  
-                <div style={{"padding":"15px"}}>
+                <div className='' style={{}}>
                   <div style={{"margin":"20px"}}>
                     <TextField fullWidth label="Plan Name" type="text" name="name" value={planName} onChange={(e)=> setPlanName(e.target.value)} />
                   </div>
@@ -127,8 +136,8 @@ function AddMembershipPlans(){
                             <MenuItem className='answertype' value={"MONTHS"} >{"MONTHS"}</MenuItem>
                             <MenuItem className='answertype' value={"YEARS"} >{"YEARS"}</MenuItem>
                           </Select>
-                        </FormControl>
-                      </div>
+                      </FormControl>
+                    </div>
                   </div>
 									<div style={{"margin":"20px"}}>
                     <TextField
@@ -159,23 +168,24 @@ function AddMembershipPlans(){
                       </FormControl>
                     </div>
                   </div>
-                  <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
-                    <input type="file"
-                      onChange={(e) => uploadFile(e.target.files[0])} />
-                  </div> 
-                  <div>
-                    <img style={{ width: '150px', verticalAlign: 'middle'}} 
-                    src={picture} />
-                  </div> 
-                  <div className='textal p20'>
+                  {/* <div>         
+                    <div>
+                      <img style={{ width: '150px', verticalAlign: 'middle'}} 
+                      src={picture} />
+                    </div>              
+                  
+                    <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
+                      <input type="file"
+                        onChange={(e) => uploadFile(e.target.files[0])} />
+                    </div>          
+                  </div> */}
+                  <div className='textal ml20 mr20 mb20'>
                     <Button variant="contained" disableElevation onClick={adminAddNewMembershipPlans}>
                       Add Membership Plans
                     </Button>
                   </div>
                 </div>  
               </Item>
-            </Grid>
-            <Grid item xs={1}  sm={1} md={3} lg={3}>
             </Grid>
           </Grid>
         </Box>
@@ -190,19 +200,20 @@ function AddMembershipPlans(){
 export function Row({row}) {
   const [id, setId]= React.useState(row.id)
   const [planName, setPlanName]= React.useState(row.name)
-  const [description, setDescription]= React.useState(row.description)
+  const [description, setDescription]= React.useState(row.terms_and_conditions)
   const [price, setPrice]= React.useState(row.price)
   const [picture, setPicture]= React.useState(row.picture)
   const [expiry_duration, setExpiry_duration] = React.useState(row.expiry_duration)
   const [files, setFiles] = React.useState([])
-  const [paymentFrequency, setPaymentFrequency]= React.useState(row.paymentFrequency)
-  const [expiryDurationUnit, setExpiryDurationUnit]= React.useState(row.expiryDurationUnit)
+  const [paymentFrequency, setPaymentFrequency]= React.useState(row.payment_frequency)
+  const [expiryDurationUnit, setExpiryDurationUnit]= React.useState(row.expiry_duration_unit)
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   
   const update_membership_plan = function(){	
-    api("/update_membership_plan", {name: planName, price:price, terms_and_conditions:description, payment_frequency:paymentFrequency, expiry_duration_unit: expiryDurationUnit, expiry_duration : expiry_duration }, 
+    api("/update_membership_plan", {id:id, name: planName, price:price, terms_and_conditions:description, payment_frequency:paymentFrequency, expiry_duration_unit: expiryDurationUnit, expiry_duration : expiry_duration }, 
       function(backend_output){
       console.log("backend_output=",backend_output )
       if("error" in backend_output) {
@@ -216,8 +227,23 @@ export function Row({row}) {
     })
   }
 
-  const delete_schedule = function(){	
-    api("/delete_schedule", {id:id }, function(backend_output){
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
+
+  const delete_membership_plan_in_row = () => {
+    delete_membership_plan(id)
+    handleClose()
+    setIsDeleted(true)
+  };
+
+
+   const delete_membership_plan = function(){	
+    api("/delete_membership_plan", {id:id }, function(backend_output){
       console.log("backend_output=",backend_output )
       if("error" in backend_output) {
         alert(backend_output.error)
@@ -229,6 +255,7 @@ export function Row({row}) {
       }
     })
   }
+
 
   const studio_edit_input_on =function(){
     setIsUpdate(true)
@@ -259,12 +286,12 @@ export function Row({row}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="large" onClick={studio_edit_input_on} >
+        <TableCell  align="left" scope="row"> 
+          <Button variant="contained" size="small" onClick={studio_edit_input_on} >
             edit
           </Button> 
         </TableCell>  
-        <TableCell  align="center" scope="row">
+        <TableCell  align="left" scope="row">
           {!isUpdate && (
               <>{planName}</>
           )}
@@ -272,9 +299,18 @@ export function Row({row}) {
             <TextField  label="Plan Name" type="text" name="name" value={planName} onChange={(e)=> setPlanName(e.target.value)} />           
           )}
         </TableCell>
-        {/* <TableCell  align="center" scope="row">
+        <TableCell  align="center" scope="row"> 
           {!isUpdate && (
-            {description}
+            <>{price}</>
+          )}
+          {isUpdate && (
+            <TextField fullWidth label="Price" type="number" name="name" value={price} onChange={(e)=> setPrice(e.target.value)} />         
+          )}
+        </TableCell>
+
+        <TableCell  align="center" scope="row">
+          {!isUpdate && (
+            <>{description}</>
           )}
           {isUpdate && (
             <TextField
@@ -286,18 +322,19 @@ export function Row({row}) {
             value={description} onChange={(e)=>setDescription(e.target.value)}
           />          
           )}
-        </TableCell> */}
-        {/* <TableCell  align="center" scope="row">
+        </TableCell>
+         <TableCell  align="center" scope="row">
           {!isUpdate && (
-            {expiry_duration}
+            <>{expiry_duration}</>
           )}
           {isUpdate && (
-            <TextField  fullWidth label="Expiry Duration" type="datetime-local" name="name" value={expiry_duration} onChange={(e)=> setExpiry_duration(e.target.value)} />      
+            <TextField  fullWidth label="Expiry Duration" type="number" name="name" value={expiry_duration} onChange={(e)=> setExpiry_duration(e.target.value)} />
+            
           )}
         </TableCell>
         <TableCell  align="center" scope="row">
           {!isUpdate && (
-              {paymentFrequency}
+              <>{paymentFrequency}</>
           )}
           {isUpdate && (
             <FormControl sx={{  minWidth: 200 }}  size="small">
@@ -317,24 +354,31 @@ export function Row({row}) {
             </FormControl>          
           )}
         </TableCell>
-        <TableCell  align="center" scope="row"> 
-          {!isUpdate && (
-            {price}
-          )}
-          {isUpdate && (
-            <TextField fullWidth label="Price" type="number" name="name" value={price} onChange={(e)=> setPrice(e.target.value)} />         
-          )}
-        </TableCell>
         <TableCell  align="center" scope="row">
           {!isUpdate && (
-            {expiryDurationUnit}
+            <>{expiryDurationUnit}</>
           )}
           {isUpdate && (
-            <TextField fullWidth label="Expiry Duration Unit" type="text" name="name" value={expiryDurationUnit} onChange={(e)=> setExpiryDurationUnit(e.target.value)} />           
+            <>
+            <FormControl  fullWidth>
+              <InputLabel id="demo-select-small">Expiry Duration Unit</InputLabel>
+                <Select
+                  labelId="demo-select-small"
+                  id="demo-select-small"
+                  value={expiryDurationUnit}
+                  label="Expiry Duration Unit"
+                  onChange={(e) => setExpiryDurationUnit(e.target.value)}
+                >
+                  <MenuItem className='answertype' value={"DAYS"} >{"DAYS"}</MenuItem>
+                  <MenuItem className='answertype' value={"MONTHS"} >{"MONTHS"}</MenuItem>
+                  <MenuItem className='answertype' value={"YEARS"} >{"YEARS"}</MenuItem>
+                </Select>
+            </FormControl>
+            </>          
           )} 
         </TableCell>
        
-        <TableCell  align="center" scope="row">
+        {/* <TableCell  align="center" scope="row">
           {!isUpdate && (
             <div>
               <img style={{ width: '150px', verticalAlign: 'middle'}} 
@@ -350,12 +394,38 @@ export function Row({row}) {
         </TableCell>  */}
         
         <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="large" onClick={update_membership_plan} >
+          <Button variant="contained" size="small" onClick={update_membership_plan} >
             Save
           </Button> 
         </TableCell>
         <TableCell  align="center">
-          <DeleteForeverIcon onClick={delete_schedule} /> 
+          {/* <DeleteForeverIcon onClick={delete_membership_plan} />  */}
+
+          <DeleteForeverIcon onClick={handleOpen} />
+
+          <div className=''>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+              >
+                <div className=''>
+                  <Box sx={{ ...style, width: 400, "& button": { m: 10 } }} >
+                    <div className='color333'>Do you really want to delete this membership plan ?</div> 
+                      <div className='hsplit '>
+                        <div className='pt10 pb10 pr20 cursor fw700'  onClick={delete_membership_plan_in_row}    >
+                          Yes
+                        </div>
+                        <div className='pt10 pb10 pl20 cursor fw700 ' onClick={handleClose}>
+                          No
+                        </div>
+                      </div>
+                  </Box>
+                </div>
+              </Modal>
+            </div>            
+
         </TableCell>
       </TableRow>
       )}
@@ -371,22 +441,21 @@ export function BasicTable({membershipPlansList}) {
       <Table sx={{ }} >
         <TableHead>
           <TableRow>
-            <TableCell align="center">
+            <TableCell align="left">
               <EditIcon/>
               </TableCell>
-            <TableCell align="center">Plan Name</TableCell>
-            <TableCell align="center" >Trainer Name</TableCell>
-            <TableCell align="center" >schedule Date</TableCell>
-            <TableCell align="center">Starting Time</TableCell> 
-            <TableCell align="center" >studioId</TableCell>
-            <TableCell align="center" >Schedule Type</TableCell>
-            <TableCell align="center" >Ending Time</TableCell>
-            <TableCell align="center">Save</TableCell> 
-            <TableCell align="center">-</TableCell> 
+            <TableCell align="left" style={{"fontWeight":"700"}}>Plan Name</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Price</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}}  >Terms And Conditions</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}}>Expiry Duration</TableCell> 
+            <TableCell align="center" style={{"fontWeight":"700"}} >Payment Frequency</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Expiry Duration Unit</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}} >Save</TableCell> 
+            <TableCell align="center" >-</TableCell> 
 
           </TableRow>
         </TableHead>
-        membershipPlansList=== {JSON.stringify(membershipPlansList)}
+        {/* membershipPlansList=== {JSON.stringify(membershipPlansList)} */}
         <TableBody>
           {membershipPlansList.map((row) => (
             <Row row={row} membershipPlansList={membershipPlansList}/>
@@ -416,17 +485,18 @@ function AdminManageMemberships(){
 	return (
     <>
       <div >
-        123
         <ResponsiveAppBar/>
-        <div className='pl20 pt10 mt20 hsplit '>
-          <div className=''>  
+        <div className='hsplit mt30  '>
+          <div className='pl30'>  
             <Button variant="contained" size="large" >Add New Membership Plans</Button>  
           </div>         
-        </div>
-        <AddMembershipPlans/>
-        <div className='p2030' style={{}}>
+        </div> 
+        <div className='p2030 boxs' style={{}}>
           <div className='themecolor2 p20 fs25 bseee1'>All Membership Plans</div>
           <BasicTable membershipPlansList={membershipPlansList} />  
+        </div>
+        <div className='mb50 boxs pl30 ' >
+          <AddMembershipPlans/>
         </div>
       </div>
       </>

@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { useParams } from 'react-router-dom';
 import {SessionContext} from './library';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,8 +35,7 @@ export function MembershipJoinPage(){
   const [expiryDurationUnit, setExpiryDurationUnit]= React.useState("")
   const [session, setSession] = React.useContext(SessionContext)
   const [pricePlanList, setPricePlanList]= React.useState([])
-
-
+  const [status, setStatus] = React.useState("")
 
 
   React.useEffect(()=> {
@@ -64,41 +64,61 @@ export function MembershipJoinPage(){
 				console.log(backend_output.error)
 			}
 			else{
-				console.log("join_membership===",backend_output )
+        setStatus(backend_output.status )
+        alert(backend_output.status)
+				console.log("join_membership===",backend_output.status )
 				
 			}
 		})
 	}
-
- 
 	return (
 		<div>
 			<ResponsiveAppBar/>
       <div style={{"marginTop": "100px"}}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
-            <Grid item xs={1} sm={1} md={3} lg={3}> 
+            <Grid item  md={2} lg={2}> 
             </Grid>
-            <Grid item xs={10} sm={10} md={6} lg={6}>
-
-            <div style={{"padding":"15px"}}>
+            <Grid item xs={12} sm={12} md={8} lg={8}>
+              <div className='ml20 mr20  boxs ' style={{}}>
                 {pricePlanList.map((x)=>(
                   <>
                   {id==x.id &&(
-                    <div className='card'>{JSON.stringify(x)}</div>
+                    <div className=''>
+                      <div className='card'  >
+                        <div className='textal' style={{}}>
+                          <p className='textal'>
+                          Name Of Plan : {x.name}
+                          </p>
+                          <p className='textal'>
+                            Price :{x.price}<CurrencyRupeeIcon className='' style={{"fontSize":"15px"}}/>   
+                          </p> 
+                          <p className='textal'>
+                          Payment Frequency : {x.payment_frequency}
+                          </p>
+                          <p className='textal'>
+                          Expiry Duration : {x.expiry_duration}
+                          </p>
+                          <p className=' textal'>
+                          Expiry Duration Unit : {x.expiry_duration_unit}
+                          </p>
+                          <p className='textal'>
+                          Terms And Conditions : <p>
+                          {x.terms_and_conditions} x.terms_and_conditions x.terms_and_conditions x.terms_and_conditions x.terms_and_conditions x.terms_and_conditionsx.terms_and_conditions
+                            </p>
+                          </p>
+                        </div>
+                      </div>                        
+                    </div>
                   )}
-                  {/* <div className='card'>
-                    {JSON.stringify(x)}   
-                  </div> */}
                   </>
                 ))}     
-              </div>  
-
+              </div>        
+              <div className='ml20 mb30 mr20 '> 
                 <div className='login_header2 ' style={{}}>
-                Join Membership
-                </div>
-              <Item>  
-              <div style={{"padding":"15px"}}>
+                   Join Membership
+                </div> 
+                <div className='mb50 ml20 boxs pl30 card' style={{}}>  
                   <div style={{"margin":"20px"}}>
                     <TextField fullWidth label="Name" type="text" name="name" value={name} onChange={(e)=> setname(e.target.value)} />
                   </div>
@@ -106,13 +126,15 @@ export function MembershipJoinPage(){
                     <TextField fullWidth label="card number" type="text" name="name" value={card_number} onChange={(e)=> setcard_number(e.target.value)} />
                   </div>
                   <div style={{"margin":"20px"}}>
-                    <TextField fullWidth label="expiry" type="text" name="name" value={expiry} onChange={(e)=> setexpiry(e.target.value)} />
-                  </div>
-                  <div style={{"margin":"20px"}}>
                     <TextField fullWidth label="cvv" type="text" name="name" value={cvv} onChange={(e)=> setcvv(e.target.value)} />
                   </div>
                   <div style={{"margin":"20px"}}>
                     <TextField fullWidth label="billing address" type="text" name="name" value={billing_address} onChange={(e)=> setbilling_address(e.target.value)} />
+                  </div>
+                  <div style={{"margin":"20px"}}>
+                    {/* <TextField fullWidth label="expiry" type="text" name="name" value={expiry} onChange={(e)=> setexpiry(e.target.value)} /> */}
+
+                    <TextField fullWidth label="expiry" type="date" color="secondary" focused value= {expiry} onChange={(e)=>setexpiry(e.target.value)} />
                   </div>
                   <div className='textal p20'>
                     <Button variant="contained" disableElevation onClick={join_membership}>
@@ -120,9 +142,9 @@ export function MembershipJoinPage(){
                     </Button>
                   </div>
                 </div>  
-              </Item>
+              </div>
             </Grid>
-            <Grid item xs={1}  sm={1} md={3} lg={3}>
+            <Grid item  md={2} lg={2}>
             </Grid>
           </Grid>
         </Box>

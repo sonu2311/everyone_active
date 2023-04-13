@@ -17,6 +17,8 @@ import AdminManageSchedulePage from './Admin_manage_schedule_page';
 import PricePlanPage from './Price_plan_page';
 import MembershipJoinPage from './Membership_join_page';
 import ScheduleBookingPage from './Schedule_Booking_Page';
+import StudioCheckInPage from './Studio_check_in_page';
+import StudioSelectScheduleAndDate from './Studio_select_schedule_and_date';
 
 function MainFunc() {
   return (
@@ -41,6 +43,8 @@ function MainFunc() {
           <Route path="/Price_plan_page" element={<PricePlanPage/>} />
           <Route path="/Membership_join_page/:id" element={<MembershipJoinPage/>} />
           <Route path="/Schedule_Booking_Page" element={<ScheduleBookingPage/>} />
+          <Route path="/Studio_select_schedule_and_date" element={<StudioSelectScheduleAndDate/>} />
+          <Route path="/Studio_check_in_page/:scheduleDate/:schedule_type/:studioId" element={<StudioCheckInPage/>} />
           
           <Route path="*" element={<h1>Invalid</h1>} />
         </Route>

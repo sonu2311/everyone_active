@@ -101,7 +101,7 @@ function AddStudio(){
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='login_header2 ' style={{}}>
+                <div className='pl40  login_header3' style={{}}>
                   Add New studio
                 </div>
               <Item>  
@@ -149,6 +149,7 @@ export function Row({row}) {
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
   const [open, setOpen] = React.useState(false);
+  const [isEdit, setIsEdit]= React.useState(false)
    
   console.log("address=============", address)
   const update_studio = function(){	
@@ -161,6 +162,7 @@ export function Row({row}) {
       }
       else{ 
         setIsUpdate(false)
+        setIsEdit(false)
         console.log("studio updated.===",backend_output )
         console.log("setIsUpdate===",isUpdate )
       }
@@ -199,6 +201,7 @@ export function Row({row}) {
 
   const studio_edit_input_on =function(){
     setIsUpdate(true)
+    setIsEdit(true)
   }
 
   const uploadFile = function(file) {
@@ -228,11 +231,11 @@ export function Row({row}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell  align="left" scope="row"> 
+        {/* <TableCell  align="left" scope="row"> 
           <Button variant="contained" size="small" onClick={studio_edit_input_on} >
             edit
           </Button> 
-        </TableCell>  
+        </TableCell>   */}
         <TableCell  align="left" scope="row">
           {!isUpdate && (
             <a href= {"#/Admin_manage_schedule_page/"+row.id}  >
@@ -243,7 +246,7 @@ export function Row({row}) {
             <TextField  label="Studio Name" type="text" name="name" value={studiosName} onChange={(e)=> setStudiosName(e.target.value)} />           
           )}
         </TableCell>
-        <TableCell  align="center" scope="row">   
+        <TableCell  align="left" scope="row">   
            {/* // JSON.stringify(address) */}
           {!isUpdate && (  
             <>{address}</>
@@ -270,24 +273,33 @@ export function Row({row}) {
             src={picture} />  
           )}
           {isUpdate && (
-            <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
+            <div className='mt20 mb20 ml20 mr20 textac' style={{}}>
               <input type="file"
               onChange={(e) => uploadFile(e.target.files[0])} />
             </div>          
           )} 
 
         </TableCell>
+        {!isEdit && (
+          <TableCell  align="center" scope="row"> 
+            <Button variant="contained" size="small" onClick={studio_edit_input_on} >
+              edit
+            </Button> 
+          </TableCell> 
+        )}
+        {isEdit && ( 
         <TableCell  align="center" scope="row"> 
           <Button variant="contained" size="small" onClick={update_studio} >
             Save
           </Button> 
         </TableCell>
+        )}
         <TableCell  align="center">
-          {/* <DeleteForeverIcon onClick={delete_studio} />  */}
 
-
-          <DeleteForeverIcon onClick={handleOpen} />
-
+          <Button variant="contained" size="small" onClick={handleOpen} >
+            Delete
+          </Button> 
+          {/* <DeleteForeverIcon onClick={handleOpen} /> */}
           <div className=''>
               <Modal
                 open={open}
@@ -325,12 +337,9 @@ export function BasicTable({studiosList}) {
     <TableContainer component={Paper}>
       <Table sx={{ }} >
         <TableHead>
-          <TableRow>
-            <TableCell align="left">
-              <EditIcon/>
-              </TableCell>
+          <TableRow>     
             <TableCell align="left" style={{"fontWeight":"700"}}>Name</TableCell>
-            <TableCell align="center" style={{"fontWeight":"700"}} >Address</TableCell>
+            <TableCell align="left" style={{"fontWeight":"700"}} >Address</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}} >capacity</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}} >Image</TableCell> 
             <TableCell align="center" style={{"fontWeight":"700"}} >Save</TableCell> 
@@ -377,7 +386,7 @@ function AdminManageStudio(){
           </div>
         </div>
         <div className='p2030 boxs' style={{}}>
-          <div className='themecolor2 p20 fs25 bseee1'>All studio</div>
+          <div className='themecolor2 p20 fs25 bseee1 fontarial'>All studio</div>
           <BasicTable studiosList={studiosList} />  
         </div>
         <div className='mb50 boxs pl30 ' >

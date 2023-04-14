@@ -189,6 +189,22 @@ div.hsplit > div {
   /* color:#333; */
   
 }
+
+.login_header3{
+  text-align: left; 
+  font-size: 20px; 
+  font-weight:700; 
+  padding:15px 0px; 
+  background-color: #1976d2;; 
+  /* border-color:#2e6da4;  */
+  color:#fff;
+  border:solid #2e6da4 1px;
+  font-family: Arial, Helvetica, sans-serif;
+  /* background-color: #1976d2;; 
+  border-color:#2e6da4;  */
+  /* color:#333; */
+  
+}
 .bleee{
   border-right: solid #eee 1px;
 }
@@ -620,6 +636,13 @@ a:hover {
 .cursor{
   cursor: pointer;
 }
+.yes_no{
+  cursor: pointer;
+}
+.yes_no:hover{
+  cursor: pointer;
+  color: #1976d2;
+}
 .response_name{
   cursor: pointer;
 }
@@ -889,6 +912,9 @@ a:hover {
 
  body, button {
   font-family: roboto;
+}
+.fontarial{
+  font-family: Arial, Helvetica, sans-serif;
 }
 /* colors:
 #c6d9ec

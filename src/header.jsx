@@ -135,14 +135,14 @@ export function ResponsiveAppBar() {
           </Typography>
           
           <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
-              {role != "ADMIN" && (
+              {/* {role != "ADMIN" && ( */}
                 <a className='a_deco aoutline show-sm show-xs show-md show-lg' href="#/Schedule_Booking_Page">
                   <Button
                   sx={{ my: 2, color: 'white', display: 'block' }}>
                    Schedule Booking Page
                   </Button>
                 </a>
-              )}
+              {/* )} */}
               {IsLogin  && (
               <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Price_plan_page">
                 <Button

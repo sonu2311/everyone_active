@@ -79,8 +79,8 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='login_header2 ' style={{}}>
-                  Add New studio
+                <div className='pl30 login_header3' style={{}}>
+                  Add New Schedule
                 </div>
               <Item>  
               <div className='m20'>
@@ -162,6 +162,7 @@ export function Row({row, scheduleTypeList, trainerList}) {
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
   const [open, setOpen] = React.useState(false);
+  const [isEdit, setIsEdit]= React.useState(false)
 
   
   const update_schedule = function(){	
@@ -174,6 +175,7 @@ export function Row({row, scheduleTypeList, trainerList}) {
       }
       else{ 
         setIsUpdate(false)
+        setIsEdit(false)
       }
     })
   }
@@ -209,6 +211,7 @@ export function Row({row, scheduleTypeList, trainerList}) {
 
   const studio_edit_input_on =function(){
     setIsUpdate(true)
+    setIsEdit(true)
   }
 
   return (
@@ -218,11 +221,6 @@ export function Row({row, scheduleTypeList, trainerList}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell  align="left" scope="row"> 
-          <Button variant="contained" size="small" onClick={studio_edit_input_on} >
-            edit
-          </Button> 
-        </TableCell>  
         <TableCell  align="left" scope="row">
           {!isUpdate && (
               <>{scheduleName}</>
@@ -231,7 +229,7 @@ export function Row({row, scheduleTypeList, trainerList}) {
             <TextField  label="Schedule Name" type="text" name="name" value={scheduleName} onChange={(e)=> setScheduleName(e.target.value)} />           
           )}
         </TableCell>
-        <TableCell  align="center" scope="row">
+        <TableCell  align="left" scope="row">
           {!isUpdate && (
             <>{trainerName}</>
           )}
@@ -315,11 +313,20 @@ export function Row({row, scheduleTypeList, trainerList}) {
             <TextField  style={{"width":"95%"}} type="time" label="Ending Time " value={endTime} onChange={(e)=>setEndTime(e.target.value)} />           
           )} 
         </TableCell>
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="small" onClick={update_schedule} >
-            Save
-          </Button> 
-        </TableCell>
+        {!isEdit && (
+          <TableCell  align="left" scope="row"> 
+            <Button variant="contained" size="small" onClick={studio_edit_input_on} >
+              edit
+            </Button> 
+          </TableCell>  
+        )}
+        {isEdit && (
+          <TableCell  align="center" scope="row"> 
+            <Button variant="contained" size="small" onClick={update_schedule} >
+              Save
+            </Button> 
+          </TableCell>
+        )}
         <TableCell  align="center">
           <DeleteForeverIcon onClick={handleOpen} />
           <div className=''>
@@ -359,23 +366,19 @@ export function BasicTable({scheduleList, scheduleTypeList, trainerList}) {
       <Table sx={{ }} >
         <TableHead>
           <TableRow>
-            <TableCell align="left">
-              <EditIcon/>
-              </TableCell>
             <TableCell align="left" style={{"fontWeight":"700"}}>Name</TableCell>
-            <TableCell align="center" style={{"fontWeight":"700"}} >Trainer Name</TableCell>
+            <TableCell align="left" style={{"fontWeight":"700"}} >Trainer Name</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}} >Schedule Date</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}}>Starting Time</TableCell> 
             <TableCell align="center" style={{"fontWeight":"700"}} >Studio Id</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}} >Schedule Type</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}} >Ending Time</TableCell>
-            <TableCell align="center" style={{"fontWeight":"700"}} >Save</TableCell> 
+            <TableCell align="left" style={{"fontWeight":"700"}} >Save/Edit</TableCell> 
             <TableCell align="center" style={{"fontWeight":"700"}} >-</TableCell> 
 
           </TableRow>
         </TableHead>
         {/* {JSON.stringify(scheduleList)} */}
-            <br/>
         <TableBody>
           <>
           {scheduleList.map((row) => (
@@ -448,10 +451,10 @@ function AdminManageSchedulePage(){
     <>
       <div >
         <ResponsiveAppBar/>
-        <div className='pt15 mt20 hsplit boxs '>  
-          <div className='ml30 mr20 ' style={{width:"calc(100% - 93%)"}}>
+        <div className='pt15 mt40 hsplit boxs '>  
+          <div className='ml30 mr20  '>
             <div className='' >
-              <FormControl fullWidth >
+              <FormControl sx={{ m: 1, minWidth: 150 }}  fullWidth >
                 <InputLabel id="demo-select-small"  className=''>Studio Id</InputLabel>
                 <Select
                   labelId="demo-select-small"
@@ -471,7 +474,7 @@ function AdminManageSchedulePage(){
             </div>
           </div>
           <div className='hsplit'>
-            <div className='mr20' >
+            <div className='mr20 mt10' >
               <TextField label="schedule Date" type="date" color="secondary" focused value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} />
             </div>
             <div className='ml20 mt12'>  
@@ -483,7 +486,7 @@ function AdminManageSchedulePage(){
           </div>          */}
         </div>
         <div className='p2030' style={{}}>
-          <div className='themecolor2 p20 fs25 bseee1'>All schedules</div>
+          <div className='themecolor2 p20 fs22 bseee1 fontarial'>All schedules</div>
           <BasicTable scheduleList={scheduleList} scheduleTypeList={scheduleTypeList} trainerList={trainerList} />  
         </div>
 

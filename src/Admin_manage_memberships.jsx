@@ -104,10 +104,8 @@ function AddMembershipPlans(){
       <div style={{}}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
-            {/* <Grid item xs={1} sm={1} md={3} lg={3}> 
-            </Grid> */}
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='login_header2' style={{}}>
+                <div className='pl30 login_header3' style={{}}>
                   Add New Membership Plan
                 </div>                            
               <Item>  
@@ -188,14 +186,11 @@ function AddMembershipPlans(){
               </Item>
             </Grid>
           </Grid>
-        </Box>
-        
+        </Box>  
       </div>			
 		</div>
 	);
 }
-
-
 
 export function Row({row}) {
   const [id, setId]= React.useState(row.id)
@@ -210,6 +205,7 @@ export function Row({row}) {
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
   const [open, setOpen] = React.useState(false);
+  const [isEdit, setIsEdit]= React.useState(false)
 
   
   const update_membership_plan = function(){	
@@ -222,6 +218,7 @@ export function Row({row}) {
       }
       else{ 
         setIsUpdate(false)
+        setIsEdit(false)
         console.log("membership_plan===",backend_output )
       }
     })
@@ -259,6 +256,7 @@ export function Row({row}) {
 
   const studio_edit_input_on =function(){
     setIsUpdate(true)
+    setIsEdit(true)
   }
 
   const uploadFile = function(file) {
@@ -286,11 +284,7 @@ export function Row({row}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell  align="left" scope="row"> 
-          <Button variant="contained" size="small" onClick={studio_edit_input_on} >
-            edit
-          </Button> 
-        </TableCell>  
+        
         <TableCell  align="left" scope="row">
           {!isUpdate && (
               <>{planName}</>
@@ -299,7 +293,7 @@ export function Row({row}) {
             <TextField  label="Plan Name" type="text" name="name" value={planName} onChange={(e)=> setPlanName(e.target.value)} />           
           )}
         </TableCell>
-        <TableCell  align="center" scope="row"> 
+        <TableCell  align="left" scope="row"> 
           {!isUpdate && (
             <>{price}</>
           )}
@@ -392,40 +386,46 @@ export function Row({row}) {
             </div>          
           )} 
         </TableCell>  */}
-        
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="small" onClick={update_membership_plan} >
-            Save
-          </Button> 
-        </TableCell>
+        {!isEdit && (
+          <TableCell  align="center" scope="row"> 
+            <Button variant="contained" size="small" onClick={studio_edit_input_on} >
+              edit
+            </Button> 
+          </TableCell> 
+        )} 
+        {isEdit && (
+          <TableCell  align="center" scope="row"> 
+            <Button variant="contained" size="small" onClick={update_membership_plan} >
+              Save
+            </Button> 
+          </TableCell>
+        )} 
         <TableCell  align="center">
-          {/* <DeleteForeverIcon onClick={delete_membership_plan} />  */}
-
-          <DeleteForeverIcon onClick={handleOpen} />
-
+          <Button variant="contained" size="small" onClick={handleOpen} >
+            Delete
+          </Button> 
           <div className=''>
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="parent-modal-title"
-                aria-describedby="parent-modal-description"
-              >
-                <div className=''>
-                  <Box sx={{ ...style, width: 400, "& button": { m: 10 } }} >
-                    <div className='color333'>Do you really want to delete this membership plan ?</div> 
-                      <div className='hsplit '>
-                        <div className='pt10 pb10 pr20 cursor fw700'  onClick={delete_membership_plan_in_row}    >
-                          Yes
-                        </div>
-                        <div className='pt10 pb10 pl20 cursor fw700 ' onClick={handleClose}>
-                          No
-                        </div>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="parent-modal-title"
+              aria-describedby="parent-modal-description"
+            >
+              <div className=''>
+                <Box sx={{ ...style, width: 400, "& button": { m: 10 } }} >
+                  <div className='color333'>Do you really want to delete this membership plan ?</div> 
+                    <div className='hsplit '>
+                      <div className='pt10 pb10 pr20 cursor fw700'  onClick={delete_membership_plan_in_row}    >
+                        Yes
                       </div>
-                  </Box>
-                </div>
-              </Modal>
-            </div>            
-
+                      <div className='pt10 pb10 pl20 cursor fw700 ' onClick={handleClose}>
+                        No
+                      </div>
+                    </div>
+                </Box>
+              </div>
+            </Modal>
+          </div>            
         </TableCell>
       </TableRow>
       )}
@@ -441,18 +441,14 @@ export function BasicTable({membershipPlansList}) {
       <Table sx={{ }} >
         <TableHead>
           <TableRow>
-            <TableCell align="left">
-              <EditIcon/>
-              </TableCell>
             <TableCell align="left" style={{"fontWeight":"700"}}>Plan Name</TableCell>
-            <TableCell align="center" style={{"fontWeight":"700"}} >Price</TableCell>
+            <TableCell align="left" style={{"fontWeight":"700"}} >Price</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}}  >Terms And Conditions</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}}>Expiry Duration</TableCell> 
             <TableCell align="center" style={{"fontWeight":"700"}} >Payment Frequency</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}} >Expiry Duration Unit</TableCell>
             <TableCell align="center" style={{"fontWeight":"700"}} >Save</TableCell> 
             <TableCell align="center" >-</TableCell> 
-
           </TableRow>
         </TableHead>
         {/* membershipPlansList=== {JSON.stringify(membershipPlansList)} */}
@@ -492,7 +488,7 @@ function AdminManageMemberships(){
           </div>         
         </div> 
         <div className='p2030 boxs' style={{}}>
-          <div className='themecolor2 p20 fs25 bseee1'>All Membership Plans</div>
+          <div className='themecolor2 p20 fs22 bseee1 fontarial'>All Membership Plans</div>
           <BasicTable membershipPlansList={membershipPlansList} />  
         </div>
         <div className='mb50 boxs pl30 ' >

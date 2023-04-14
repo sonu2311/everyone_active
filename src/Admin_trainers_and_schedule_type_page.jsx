@@ -78,7 +78,7 @@ export function AddTrainer(){
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >    
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='login_header2 ' style={{}}>
+                <div className='pl30 login_header3 ' style={{}}>
                   Add New Trainer
                 </div>
               <Item>  
@@ -94,8 +94,8 @@ export function AddTrainer(){
                 </div>  
               </Item>
             </Grid>
-            <Grid item xs={1}  sm={1} md={3} lg={3}>
-            </Grid>
+            {/* <Grid item xs={1}  sm={1} md={3} lg={3}>
+            </Grid> */}
           </Grid>
         </Box>       
       </div>		
@@ -130,7 +130,7 @@ export function AddScheduleType(){
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='login_header2 ' style={{}}>
+                <div className='pl30 login_header3 ' style={{}}>
                   Add New Schedule Type
                 </div>
               <Item>  
@@ -162,6 +162,7 @@ export function Row({row}) {
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
   const [open, setOpen] = React.useState(false);
+  const [isEdit, setIsEdit]= React.useState(false)
    
   const update_trainer = function(){	
     api("/update_trainer", {id:trainerId, name:trainerName }, 
@@ -173,6 +174,7 @@ export function Row({row}) {
       }
       else{ 
         setIsUpdate(false)
+        setIsEdit(false)
         console.log("studio updated.===",backend_output )
         console.log("setIsUpdate===",isUpdate )
       }
@@ -211,6 +213,7 @@ export function Row({row}) {
 
   const trainer_edit_input_on =function(){
     setIsUpdate(true)
+    setIsEdit(true)
   }
 
   // if (isDeleted){
@@ -223,11 +226,6 @@ export function Row({row}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell  align="left" scope="row"> 
-          <Button variant="contained" size="small" onClick={trainer_edit_input_on} >
-            edit
-          </Button> 
-        </TableCell>  
         <TableCell  align="left" scope="row">
           {!isUpdate && (
             <>{trainerName}</>  
@@ -236,13 +234,24 @@ export function Row({row}) {
             <TextField  label="Studio Name" type="text" name="name" value={trainerName} onChange={(e)=> setTrainerName(e.target.value)} />           
           )}
         </TableCell>
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="small" onClick={update_trainer} >
-            Save
-          </Button> 
-        </TableCell>
+        {!isEdit && (
+          <TableCell  align="center" scope="row"> 
+            <Button variant="contained" size="small" onClick={trainer_edit_input_on} >
+              edit
+            </Button> 
+          </TableCell>  
+        )}
+        {isEdit && (
+          <TableCell  align="center" scope="row"> 
+            <Button variant="contained" size="small" onClick={update_trainer} >
+              Save
+            </Button> 
+          </TableCell>
+        )}
         <TableCell  align="center">
-          <DeleteForeverIcon onClick={handleOpen} />
+          <Button variant="contained" size="small" onClick={handleOpen} >
+            Delete
+          </Button> 
           <div className=''>
             <Modal
               open={open}
@@ -278,9 +287,7 @@ export function BasicTable({resultsList}) {
       <Table sx={{ }} >
         <TableHead>
           <TableRow>
-            <TableCell align="left">
-              <EditIcon/>
-              </TableCell>
+            
             <TableCell align="left" style={{"fontWeight":"700"}}>Trainer Name</TableCell>  
             <TableCell align="center" style={{"fontWeight":"700"}} >Save</TableCell> 
             <TableCell align="center" style={{"fontWeight":"700"}} >-</TableCell> 
@@ -305,6 +312,7 @@ export function ScheduleRow({row}) {
   const [isUpdate, setIsUpdate]= React.useState(false)
   const [isDeleted, setIsDeleted]= React.useState(false)
   const [open, setOpen] = React.useState(false);
+  const [isEdit, setIsEdit]= React.useState(false)
    
   const update_schedule = function(){	
     api("/update_schedule_type", {id:scheduleId, name:scheduleName }, 
@@ -316,6 +324,7 @@ export function ScheduleRow({row}) {
       }
       else{ 
         setIsUpdate(false)
+        setIsEdit(false)
         console.log("studio updated.===",backend_output )
         console.log("setIsUpdate===",isUpdate )
       }
@@ -354,6 +363,7 @@ export function ScheduleRow({row}) {
 
   const trainer_edit_input_on =function(){
     setIsUpdate(true)
+    setIsEdit(true)
   }
 
 
@@ -367,11 +377,6 @@ export function ScheduleRow({row}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        <TableCell  align="left" scope="row"> 
-          <Button variant="contained" size="small" onClick={trainer_edit_input_on} >
-            edit
-          </Button> 
-        </TableCell>  
         <TableCell  align="left" scope="row">
           {!isUpdate && (
             <a href= {"#/manage_schedule/"+row.id}  >
@@ -382,13 +387,25 @@ export function ScheduleRow({row}) {
             <TextField  label="Schedule Name" type="text" name="name" value={scheduleName} onChange={(e)=> setScheduleName(e.target.value)} />           
           )}
         </TableCell>
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="small" onClick={update_schedule} >
-            Save
-          </Button> 
-        </TableCell>
+        {!isEdit && (
+          <TableCell  align="center" scope="row"> 
+            <Button variant="contained" size="small" onClick={trainer_edit_input_on} >
+              edit
+            </Button> 
+          </TableCell>  
+        )}
+        {isEdit && (
+          <TableCell  align="center" scope="row"> 
+            <Button variant="contained" size="small" onClick={update_schedule} >
+              Save
+            </Button> 
+          </TableCell>
+        )}
         <TableCell  align="center">
-          <DeleteForeverIcon onClick={handleOpen} />
+          <Button variant="contained" size="small" onClick={handleOpen} >
+            Delete
+          </Button> 
+          {/* <DeleteForeverIcon onClick={handleOpen} /> */}
           <div className=''>
             <Modal
               open={open}
@@ -425,9 +442,6 @@ export function ScheduleBasicTable({scheduleList}) {
       <Table sx={{ }} >
         <TableHead>
           <TableRow>
-            <TableCell align="left">
-              <EditIcon/>
-              </TableCell>
             <TableCell align="left" style={{"fontWeight":"700"}}>Schedule Type Name</TableCell>  
             <TableCell align="center" style={{"fontWeight":"700"}}>Save</TableCell> 
             <TableCell align="center">-</TableCell> 
@@ -484,11 +498,11 @@ function AdminTrainersAndScheduleTypePage(){
           </div>  
         </div>
         <div className='p2030' style={{}}>
-          <div className='themecolor2 p20 fs25 bseee1'>All Trainers</div>
+          <div className='themecolor2 p20 fs22 bseee1 fontarial'>All Trainers</div>
           <BasicTable resultsList={resultsList} />            
         </div>
         <div className='p2030' style={{}}>
-          <div className='themecolor2 p20 fs25 bseee1'>All Schedule Type</div>
+          <div className='themecolor2 p20 fs22 bseee1 fontarial'>All Schedule Type</div>
           <ScheduleBasicTable scheduleList={scheduleList} />             
         </div>
         <div className='mb20 boxs pl30 ' >

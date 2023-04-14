@@ -32,13 +32,14 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   bgcolor: "background.paper",
   border: "2px solid #eee",
   boxShadow: 24,
   pt: 1,
   px: 2,
   pb: 0,
+  borderRadius :1
 };
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -179,8 +180,6 @@ export function Row({row}) {
 }
 
 
-
-
 export function BasicTable({scheduleList}) {  
   return (
     <TableContainer component={Paper}>
@@ -213,8 +212,6 @@ export function BasicTable({scheduleList}) {
     </TableContainer>
   );
 }
-
-
 
 export function OneSchedulesDetails({schedulesDetails}) {
   const [scheduleId, setScheduleId]= React.useState(schedulesDetails.id)
@@ -258,7 +255,6 @@ export function OneSchedulesDetails({schedulesDetails}) {
   };
   
 
-
   const booking_cancel= function(scheduleId){
     api("/cancel_booking", {"schedule_id": scheduleId}, function(backend_output){
       if("error" in backend_output){
@@ -281,56 +277,53 @@ export function OneSchedulesDetails({schedulesDetails}) {
 
   return ( 
      <>                                        
-        <div className='bseee1 p20'> 
-        {/* list={JSON.stringify(list)} */}
-          <div>name=== {name}</div> 
-          <div>id=== {scheduleId}</div>
-          <div>start_time={start_time}</div>
-          <div>end_time={end_time}</div>
-          <div>trainer={trainer}</div>
-          
+        <div className='p20'> 
+          <p>Name: {name}</p> 
+          <p>Id:  {scheduleId}</p>
+          <p>Start Time: {start_time}</p>
+          <p>End Time: {end_time}</p>
+          <p>Trainer: {trainer}</p>         
           <div>
             {!isReserved && (  
               <div style={{cursor:"pointer" }} >
-                <Button variant="contained" size="small" onClick={handleOpen} >Reserve</Button>
+                <Button variant="text" size="small" onClick={handleOpen} >Reserve</Button>
               </div>
             )}
             {isReserved && (  
               <div style={{cursor:"pointer" }} >
-                <Button size="small" variant="contained" onClick={handleOpen} >Cancel</Button>
+                <Button size="small" variant="text" onClick={handleOpen} >Cancel</Button>
               </div>
             )}
-            <div>
+            <div >
               <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
               >
-                <div>
-                  <Box sx={{ ...style, width: 300, "& button": { m: 5 } }} >
-
-                    <div>
-                      <div>schedule_type={schedule_type}</div>
-                      <div>num_bookings={num_bookings}</div>
-                      <div>capacity={capacity}</div>
-                      <div>address={address}</div>
-                      <div>studio_name={studio_name}</div>
-
-                    </div> 
-                  <div className='color333'>Do you really want to Reserve ?</div> 
-                    <div className='hsplit'>
+                <div className='' >
+                  <Box sx={{ ...style, width: 350, "& button": { m: 5 } }} >
+                    <div >
+                      <p>Schedule Type : {schedule_type}</p>
+                      <p>Num Bookings : {num_bookings}</p>
+                      <p>Capacity : {capacity}</p>
+                      <p>Address : {address}</p>
+                      <p>Studio Name : {studio_name}</p>
+                    </div>
+                    <hr/> 
+                  <div className='color333 fw700'>Do you really want to Reserve ?</div> 
+                    <div className='hsplit boxs'>
                       {!isReserved && ( 
-                        <div className='p10 cursor'  onClick={reserve}    >
-                          yes
+                        <div className=' p20 yes_no boxs'  onClick={reserve}    >
+                          Yes
                         </div>
                       )}
                       {isReserved && ( 
-                        <div className='p10 cursor'  onClick={cancel}    >
+                        <div className='p20 yes_no'  onClick={cancel}    >
                           Cancel
                         </div>
                       )}
-                      <div className='p10 cursor ' onClick={handleClose}>
+                      <div className='p20 yes_no ' onClick={handleClose}>
                         No
                       </div>
                     </div>
@@ -339,9 +332,7 @@ export function OneSchedulesDetails({schedulesDetails}) {
               </Modal>
             </div>  
           </div>  
-
-        </div>
-        
+        </div>   
      </>
   );
 }
@@ -350,12 +341,10 @@ export function SchedulesDetails({row}) {
   const [scheduleId, setScheduleId]= React.useState(row.id)
   const [list, setList]= React.useState(row)
   const [open, setOpen] = React.useState(false);
-
-
   return ( 
      <>
      {list.map((x, index) => (                                           
-        <div className='bseee1 p20'>
+        <div className=' '>
           <OneSchedulesDetails schedulesDetails={x} />        
         </div>       
       ))}    
@@ -436,7 +425,6 @@ function ScheduleBookingPage(){
    get_upcomming_days()
  
   
-
   const show = function(){
     api("/get_upcoming_schedules", {studio_id_list:[studioId] ,
       date_list: get_upcomming_dates(), schedule_type: schedule_type}, function(backend_output){
@@ -449,86 +437,98 @@ function ScheduleBookingPage(){
         } 
       })
   }
-
 	
 	return (
     <>
       <div >
         <ResponsiveAppBar/>
-        <div className='pl20 pt10 mt20 hsplit '>
-          <div className='mt20 mb20 ml20 mr20 textal'>
-            <div className='bsr1' >
-              <FormControl >
-                <InputLabel id="demo-select-small">schedule_type</InputLabel>
-                  <Select
-                    labelId="demo-select-small"
-                    id="demo-select-small"
-                    value={schedule_type}
-                    label="schedule type"
-                    onChange={(e) => setSchedule_type(e.target.value)}
-                  >  
-                    {scheduleTypeList.map((x) => (
-                      <MenuItem className='answertype' value={x.name} >                        
-                        <div> 
-                          {x.name}, {x.id}
-                        </div>
-                      </MenuItem>
-                    ))}                          
-                  </Select>
-              </FormControl>
-              <FormControl >
-                <InputLabel id="demo-select-small">Studios Id</InputLabel>
-                  <Select
-                    labelId="demo-select-small"
-                    id="demo-select-small"
-                    value={studioId}
-                    label="Studios Id"
-                    onChange={(e) => setStudiosId(e.target.value)}
-                  >  
-                    {studiosList.map((x) => (
-                      <MenuItem className='answertype' value={x.id} >                        
-                        <div> 
-                          {x.name}, {x.id}
-                        </div>
-                      </MenuItem>
-                    ))}                          
-                  </Select>
-              </FormControl>
-              <Button variant="contained" size="large" onClick={show} >
-                Show All schedules
-              </Button> 
-            </div>
-          </div>
-
-          daysList = {JSON.stringify(daysList)}
-
-        </div>
-        <div className='p2030' style={{}}>
-          <div>
-            upcomeingscheduleList=={JSON.stringify(upcomeingscheduleList)}
-          </div> 
-          <div className='' style={{"width":"1500px"}}>
-            <div className='hsplit'>
-              {upcomeingscheduleList.map((x, index)=>(
-                <>
-                <div className='bseee1 boxs'  >
-                  <div className='pl10 boxs pt10 pb10 bckgr colorfff' style={{"width":"205px"}}>{daysList[index]} {x.date}</div>
-                  <div className='color333' style={{"width":"205px"}} >
-                    {/* schedules= {JSON.stringify(x.schedules)} */}
-                  {/* {x.schedules.name} */}
-                    <SchedulesDetails row={x.schedules} />
+        <div style={{}}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container >
+              <Grid item  md={1} lg={1}> 
+              </Grid>
+              <Grid item xs={12} sm={12} md={10} lg={10}>
+                <div className=' boxs ' style={{}}>
+                  <div className='mt40 mb20 pt10  textal'>
+                    <div className='hsplit' >
+                      <div className=' mr10'>
+                        <FormControl sx={{ m: 1, minWidth: 180 }}  size="small">
+                          <InputLabel id="demo-select-small">Schedule Type</InputLabel>
+                            <Select
+                              labelId="demo-select-small"
+                              id="demo-select-small"
+                              value={schedule_type}
+                              label="schedule type"
+                              onChange={(e) => setSchedule_type(e.target.value)}
+                            >  
+                              {scheduleTypeList.map((x) => (
+                                <MenuItem className='answertype' value={x.name} >                        
+                                  <div> 
+                                    {x.name}, {x.id}
+                                  </div>
+                                </MenuItem>
+                              ))}                          
+                            </Select>
+                        </FormControl>
+                      </div>
+                      <div className=' mr10 '>
+                        <FormControl sx={{ m: 1, minWidth: 180 }}  size="small" >
+                          <InputLabel id="demo-select-small">Studios Id</InputLabel>
+                            <Select
+                              labelId="demo-select-small"
+                              id="demo-select-small"
+                              value={studioId}
+                              label="Studios Id"
+                              onChange={(e) => setStudiosId(e.target.value)}
+                            >  
+                              {studiosList.map((x) => (
+                                <MenuItem className='answertype' value={x.id} >                        
+                                  <div> 
+                                    {x.name}, {x.id}
+                                  </div>
+                                </MenuItem>
+                              ))}                          
+                            </Select>
+                        </FormControl>
+                      </div>
+                      <div className='mt10 ml10 '>
+                        <Button variant="contained" size="small" onClick={show} >
+                          Show
+                        </Button> 
+                      </div>
+                    </div>
                   </div>
-                </div>  
-                </>
-              ))}
-              <div>
-              </div>
-            </div>
-          </div>  
+                  <div className='p20' style={{}}>
+                    {/* <div>
+                      upcomeingscheduleList=={JSON.stringify(upcomeingscheduleList)}
+                    </div>  */}
+                    <div className='card boxs' style={{"width":"100%"}}>
+                      <div className='hsplit'>
+                        {upcomeingscheduleList.map((x, index)=>(
+                          <>
+                          <div className='bseee1 boxs'style={{}}  >
+                            <div className='pl10 pt10 pb10 boxs bckgr colorfff'style={{"width":"210px"}}>       
+                              <div>{daysList[index]}</div>
+                              <div>{x.date}</div>
+                            </div>
+                            <div className='' style={{"width":"210px"}} >
+                              <SchedulesDetails row={x.schedules} />
+                            </div>
+                          </div>  
+                          </>
+                        ))}
+                      </div>
+                    </div>  
+                  </div>
+                </div>   
+              </Grid>
+              <Grid item  md={1} lg={1}>
+              </Grid>
+            </Grid>
+          </Box>   
         </div>
-
       </div>
-      </>
+    </>
 	);
 }
 

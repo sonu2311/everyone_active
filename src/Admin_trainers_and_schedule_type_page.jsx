@@ -78,7 +78,7 @@ export function AddTrainer(){
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >    
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='pl30 login_header3 ' style={{}}>
+                <div className='pl30 login_header5' style={{}}>
                   Add New Trainer
                 </div>
               <Item>  
@@ -130,7 +130,7 @@ export function AddScheduleType(){
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='pl30 login_header3 ' style={{}}>
+                <div className='pl30 login_header5 ' style={{}}>
                   Add New Schedule Type
                 </div>
               <Item>  
@@ -442,7 +442,7 @@ export function ScheduleBasicTable({scheduleList}) {
       <Table sx={{ }} >
         <TableHead>
           <TableRow>
-            <TableCell align="left" style={{"fontWeight":"700"}}>Schedule Type Name</TableCell>  
+            <TableCell align="left" style={{"fontWeight":"700"}}>Schedule Name</TableCell>  
             <TableCell align="center" style={{"fontWeight":"700"}}>Save</TableCell> 
             <TableCell align="center">-</TableCell> 
           </TableRow>
@@ -463,6 +463,7 @@ export function ScheduleBasicTable({scheduleList}) {
 function AdminTrainersAndScheduleTypePage(){
   const [resultsList, setResultsList] = React.useState([])
   const [scheduleList, setscheduleList] = React.useState([])
+  
   
 	React.useEffect(()=> {
     api("/get_all_trainers", {}, function(backend_output){
@@ -489,15 +490,8 @@ function AdminTrainersAndScheduleTypePage(){
     <>
       <div >
         <ResponsiveAppBar/>
-        <div className='mt30   hsplit '>
-          <div className=' pl30'> 
-            <Button variant="contained" size="large" >Add New Trainer</Button> 
-          </div>
-          <div className='pl30'>
-            <Button variant="contained" size="large" >Add schedule type</Button>
-          </div>  
-        </div>
-        <div className='p2030' style={{}}>
+        
+        <div className='p2030 mt30' style={{}}>
           <div className='themecolor2 p20 fs22 bseee1 fontarial'>All Trainers</div>
           <BasicTable resultsList={resultsList} />            
         </div>

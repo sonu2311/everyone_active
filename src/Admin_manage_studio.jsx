@@ -61,8 +61,7 @@ function AddStudio(){
   const [capacity, setCapacity]= React.useState("") 
   const [files, setFiles] = React.useState([])
   const [picture, setPicture]= React.useState("")
-  
-	
+  	
   const adminAddNewStudio = function(){	
 		api("/add_studio", {name:studiosName, address:address, capacity:capacity,picture:picture }, 
 			function(backend_output){
@@ -73,7 +72,6 @@ function AddStudio(){
 			}
 			else{
 				console.log("studio added.===",backend_output )
-				window.location.href = "#/Admin_manage_studio"
 			}
 		})
 	}
@@ -101,7 +99,7 @@ function AddStudio(){
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='pl40  login_header3' style={{}}>
+                <div className='pl40  login_header5' style={{}}>
                   Add New studio
                 </div>
               <Item>  
@@ -231,11 +229,6 @@ export function Row({row}) {
         key={row.id}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
       >
-        {/* <TableCell  align="left" scope="row"> 
-          <Button variant="contained" size="small" onClick={studio_edit_input_on} >
-            edit
-          </Button> 
-        </TableCell>   */}
         <TableCell  align="left" scope="row">
           {!isUpdate && (
             <a href= {"#/Admin_manage_schedule_page/"+row.id}  >
@@ -379,18 +372,13 @@ function AdminManageStudio(){
 	return (
     <>
       <div >
-        <ResponsiveAppBar/>
-        <div className='hsplit mt30 '>
-          <div className='pl30'> 
-            <Button variant="contained" size="large" >Add New studio</Button>  
-          </div>
-        </div>
-        <div className='p2030 boxs' style={{}}>
+        <ResponsiveAppBar/>       
+        <div className='p2030 boxs mt30' style={{}}>
           <div className='themecolor2 p20 fs25 bseee1 fontarial'>All studio</div>
           <BasicTable studiosList={studiosList} />  
         </div>
         <div className='mb50 boxs pl30 ' >
-          <AddStudio/>
+          <AddStudio />
         </div>
       </div>
       </>

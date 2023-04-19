@@ -27,21 +27,91 @@ import { DataArraySharp } from '@mui/icons-material';
 import Modal from "@mui/material/Modal";
 import { useParams } from 'react-router-dom';
 
-function StudioCheckInPage(){
-
-  const {scheduleDate, schedule_type, studioId } = useParams()
-  const [studio_checkin_list, setStudio_checkin_list]= React.useState([])
-  const [scheduleTypeList, setScheduleTypeList]= React.useState([])
-  const [studiosList, setStudiosList]= React.useState([])
-  const [upcomeingscheduleList, setUpcomeingScheduleList]= React.useState([])
-  const [daysList, setDaysList]= React.useState([]) 
+export function Row({row,scheduleId}) {
+  const [userId, setUserId]= React.useState(row.user_id)
+  const [isCheckedIn, setIsCheckedIn]= React.useState(row.is_checked_in)
   
-  React.useEffect(()=> {  
-    api("/get_studio_checkin_list", {"schedule_id": schedule_type}, function(backend_output){
+
+  // {"user_id":3,"name":"s1","is_checked_in":false},{"user_id":3,"name":"s1","is_checked_in":false}
+
+//   # An API for checkin from the tab in studio.
+// # Input: {"schedule_id": 23, "user_id": 33}
+// # Sample Output: {}
+// # Possible Output: {"error": "Invalid checkin"}
+
+
+  const checkin =function(){
+    api("/studio_checkin", {"schedule_id": scheduleId, "user_id": userId}, function(backend_output){
       if("error" in backend_output){
         alert(backend_output.error)
       }
       else{
+        console.log("/studio_checkin=== ",backend_output )
+      } 
+    })
+  }
+  return (
+    <> 
+      <TableRow
+          key={row.id}
+          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        >    
+        <TableCell  align="left" scope="row">
+            <>{row.name}</>
+        </TableCell>  
+        <TableCell  align="center" scope="row">
+          {!isCheckedIn &&(
+            <Button size="small"variant="contained" disableElevation onClick={checkin}>
+              check in
+            </Button>
+          )}
+          {isCheckedIn &&(
+            <Button size="small"variant="contained" disableElevation>
+              Done
+            </Button>
+          )}
+
+        </TableCell>
+      </TableRow>
+    </>
+  ) 
+}
+
+export function BasicTable({studio_checkin_list, scheduleId}) { 
+  
+  return (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 500  }} >
+        <TableHead>
+          <TableRow>
+            <TableCell align="left" style={{"fontWeight":"700"}}>Name</TableCell>
+            <TableCell align="center" style={{"fontWeight":"700"}}>-</TableCell> 
+          </TableRow>
+        </TableHead>
+        {/* {JSON.stringify(scheduleList)} */}
+        <TableBody>
+          <>
+          {studio_checkin_list.map((row) => (  
+            <Row row={row} scheduleId={scheduleId} />
+          ))}
+         </>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+function StudioCheckInPage(){
+  const {scheduleId} = useParams()
+  const [studio_checkin_list, setStudio_checkin_list]= React.useState([])
+  
+  React.useEffect(()=> {  
+    api("/get_studio_checkin_list", {"schedule_id": parseInt(scheduleId)}, function(backend_output){
+      if("error" in backend_output){
+        alert(backend_output.error)
+      }
+      else{
+        
         setStudio_checkin_list(backend_output.results)
         console.log("studio_checkin_list======  ",studio_checkin_list )
       } 
@@ -53,12 +123,10 @@ function StudioCheckInPage(){
     <>
       <div >
         <ResponsiveAppBar/>
-        <div className='pl20 pt10 mt20 hsplit '>
-          <div className='mt20 mb20 ml20 mr20 textal'>
-            <div className='bsr1' >
-            studio_checkin_list = {JSON.stringify(studio_checkin_list)}
-              
-            </div>
+        <div className='p20  boxs mt20 hsplit '>
+          <div className='p10' style={{}}>
+            <div className='p20 fs18 fw700 br2 textac bseee1 fontarial '>List Of Name</div>
+            <BasicTable studio_checkin_list={studio_checkin_list} scheduleId={scheduleId}  />  
           </div>   
 
         </div>

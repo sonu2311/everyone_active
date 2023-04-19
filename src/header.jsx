@@ -135,50 +135,53 @@ export function ResponsiveAppBar() {
           </Typography>
           
           <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
+
+            {IsLogin  && (
+              <a className='a_deco aoutline show-sm show-xs show-md show-lg' href="#/Price_plan_page">
+                <Button
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                Plans
+                </Button>
+              </a>
+            )}
+            {!IsLogin  && (
+              <a className='a_deco show-sm show-xs show-md show-lg aoutline ' href="#/Price_plan_page">
+                <Button
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                 Plans
+                </Button>
+              </a>
+            )}
               {/* {role != "ADMIN" && ( */}
-                <a className='a_deco aoutline show-sm show-xs show-md show-lg' href="#/Schedule_Booking_Page">
+              {IsLogin  && (role=="ADMIN" || role=="CUSTOMER") && (
+                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Schedule_Booking_Page">
                   <Button
                   sx={{ my: 2, color: 'white', display: 'block' }}>
-                   Schedule Booking Page
+                  Booking
                   </Button>
                 </a>
+              )}
               {/* )} */}
-              {IsLogin  && (
-              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Price_plan_page">
-                <Button
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                 Price plan page
-                </Button>
-              </a>
-              )}
-              {!IsLogin  && (
-              <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Price_plan_page">
-                <Button
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                 Price plan page
-                </Button>
-              </a>
-              )}
-              
-              {IsLogin  && role=="ADMIN" &&  (
+             
+              {/* {IsLogin  && role=="ADMIN" &&  (
               <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/admin_all_users">
                 <Button
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                  Admin all users
+                  Users
                 </Button>
               </a>
-              )}
+              )} */}
               {IsLogin && role=="ADMIN" && (
               <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Admin_manage_memberships">
                 <Button
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                 Admin manage memberships
+                 Memberships
                 </Button>
               </a>
               )}
@@ -188,7 +191,17 @@ export function ResponsiveAppBar() {
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                  Admin manage studio
+                   Studio
+                  </Button>
+                </a>
+              )}
+              {IsLogin && role=="CUSTOMER" && (
+                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/My_schedules">
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                   My Schedules
                   </Button>
                 </a>
               )}
@@ -199,29 +212,28 @@ export function ResponsiveAppBar() {
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                  Admin trainers and schedule type page
+                   Trainers and schedule
                   </Button>
                 </a>
               )}
-
-              {IsLogin && role=="ADMIN" && (
+              {IsLogin && (role=="ADMIN" )  && (
                 <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Admin_manage_schedule_page">
                   <Button
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                  Admin manage schedule page
+                  Schedule
                   </Button>
                 </a>
               )}
 
-              {IsLogin && (role=="ADMIN" || role=="STUDIO")  && (
-                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Studio_check_in_page">
+              {IsLogin && (role=="STUDIO")  && (
+                <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Studio_select_schedule_and_date">
                   <Button
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                  Studio checkin page
+                  Select Schedule And Date
                   </Button>
                 </a>
               )}
@@ -304,7 +316,7 @@ export function ResponsiveAppBar() {
         </Toolbar>
       </Container>
     </AppBar>
-    <div style={{height: "75px"}} ></div>
+    <div style={{height: "45px"}} ></div>
   </>);
 };
 
@@ -330,15 +342,27 @@ const MenuTabs = function({session, role, IsLogin}){
         </MenuItem>
       </a>
       )}
-      {role !="ADMIN" && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Schedule_Booking_Page">
+
+      {IsLogin && role=="ADMIN" && (
+        <a className='a_deco aoutline' href="#/admin_all_users">
           <MenuItem >
             <Typography textAlign="center">
-            Schedule Booking Page
+            Users
             </Typography>
           </MenuItem>
         </a>
       )}
+      {/* {role !="ADMIN" && ( */}
+      {IsLogin  && ( 
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Schedule_Booking_Page">
+          <MenuItem >
+            <Typography textAlign="center">
+            Booking
+            </Typography>
+          </MenuItem>
+        </a>
+        )} 
+      {/* )} */}
       {!IsLogin &&(
       <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href={"#/signup"} >
         <MenuItem>
@@ -354,40 +378,20 @@ const MenuTabs = function({session, role, IsLogin}){
       </a>
       )}
       
-      {IsLogin && role !="ADMIN" && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Price_plan_page">
+       {IsLogin && (role=="STUDIO") && (
+        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Studio_select_schedule_and_date">
           <MenuItem >
             <Typography textAlign="center">
-            Price plan page
+            Select Schedule And Date
             </Typography>
           </MenuItem>
         </a>
       )}
-      {IsLogin && role=="ADMIN" && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/admin_all_users">
-          <MenuItem >
-            <Typography textAlign="center">
-            admin all users
-            </Typography>
-          </MenuItem>
-        </a>
-      )}
-       {IsLogin && (role=="ADMIN" || role=="STUDIO") && (
-        <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Studio_check_in_page">
-          <MenuItem >
-            <Typography textAlign="center">
-            Studio checkin page
-            </Typography>
-          </MenuItem>
-        </a>
-      )}
-
-
       {IsLogin && role=="ADMIN" && (
         <a className='a_deco aoutline hide-md hide-lg show-xs show-sm ' href="#/Admin_manage_memberships">
           <MenuItem >
             <Typography textAlign="center" >
-            Admin manage memberships
+            Memberships
             </Typography>
           </MenuItem>
         </a>
@@ -396,16 +400,16 @@ const MenuTabs = function({session, role, IsLogin}){
         <a className='a_deco aoutline hide-md hide-lg show-xs show-sm ' href="#/Admin_trainers_and_schedule_type_page">
           <MenuItem >
             <Typography textAlign="center" >
-            Admin_trainers_and_schedule_type_page
+            Trainers And Schedule
             </Typography>
           </MenuItem>
         </a>
       )} 
-      {IsLogin && role=="ADMIN" && (
+      {IsLogin && (role=="ADMIN" || role=="STUDIO") && (
         <a className='a_deco aoutline hide-md hide-lg show-xs show-sm ' href="#/Admin_manage_schedule_page">
           <MenuItem >
             <Typography textAlign="center" >
-            Admin_manage_schedule_page
+            Schedule
             </Typography>
           </MenuItem>
         </a>
@@ -414,7 +418,7 @@ const MenuTabs = function({session, role, IsLogin}){
         <a className='a_deco aoutline hide-md hide-lg show-xs show-sm' href="#/Admin_manage_studio">
           <MenuItem >
             <Typography textAlign="center" >
-            Admin manage studio       
+            Studio       
             </Typography>
           </MenuItem>
         </a>

@@ -105,7 +105,7 @@ function AddMembershipPlans(){
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='pl30 login_header3' style={{}}>
+                <div className='pl30 login_header5' style={{}}>
                   Add New Membership Plan
                 </div>                            
               <Item>  
@@ -372,20 +372,6 @@ export function Row({row}) {
           )} 
         </TableCell>
        
-        {/* <TableCell  align="center" scope="row">
-          {!isUpdate && (
-            <div>
-              <img style={{ width: '150px', verticalAlign: 'middle'}} 
-               src={picture} />
-            </div>
-          )}
-          {isUpdate && (
-            <div className='mt20 mb20 ml20 mr20 textal' style={{}}>
-              <input type="file"
-                onChange={(e) => uploadFile(e.target.files[0])} />
-            </div>          
-          )} 
-        </TableCell>  */}
         {!isEdit && (
           <TableCell  align="center" scope="row"> 
             <Button variant="contained" size="small" onClick={studio_edit_input_on} >
@@ -465,6 +451,7 @@ export function BasicTable({membershipPlansList}) {
 
 function AdminManageMemberships(){
   const [membershipPlansList, setMembershipPlansList]= React.useState([])
+  
 
 	React.useEffect(()=> {
     api("/get_all_membership_plans", {}, function(backend_output){
@@ -482,12 +469,8 @@ function AdminManageMemberships(){
     <>
       <div >
         <ResponsiveAppBar/>
-        <div className='hsplit mt30  '>
-          <div className='pl30'>  
-            <Button variant="contained" size="large" >Add New Membership Plans</Button>  
-          </div>         
-        </div> 
-        <div className='p2030 boxs' style={{}}>
+        
+        <div className='p2030 boxs mt30' style={{}}>
           <div className='themecolor2 p20 fs22 bseee1 fontarial'>All Membership Plans</div>
           <BasicTable membershipPlansList={membershipPlansList} />  
         </div>

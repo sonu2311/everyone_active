@@ -785,7 +785,7 @@ def studio_checkin(frontend_dict, session):
 
 # An API for gettting studio checkin list.
 # Input: {"schedule_id": 33}
-# Sample Output: {}
+# Sample Output: {"results": [...]}
 # Possible Output: {"error": "Invalid schedule"}
 @backend.api('/get_studio_checkin_list')
 def get_studio_checkin_list(frontend_dict, session):

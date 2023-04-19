@@ -115,7 +115,7 @@ export function MembershipJoinPage(){
                 ))}     
               </div>        
               <div className='ml20 mb30 mr20 '> 
-                <div className='login_header2 ' style={{}}>
+                <div className=' pl20 login_header5 fontarial ' style={{}}>
                    Join Membership
                 </div> 
                 <div className='mb50 ml20 boxs pl30 card' style={{}}>  
@@ -136,7 +136,7 @@ export function MembershipJoinPage(){
 
                     <TextField fullWidth label="expiry" type="date" color="secondary" focused value= {expiry} onChange={(e)=>setexpiry(e.target.value)} />
                   </div>
-                  <div className='textal p20'>
+                  <div className='textal p20 ml10'>
                     <Button variant="contained" disableElevation onClick={join_membership}>
                       Join Membership
                     </Button>

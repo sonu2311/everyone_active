@@ -19,6 +19,8 @@ import MembershipJoinPage from './Membership_join_page';
 import ScheduleBookingPage from './Schedule_Booking_Page';
 import StudioCheckInPage from './Studio_check_in_page';
 import StudioSelectScheduleAndDate from './Studio_select_schedule_and_date';
+import Example5 from './example5';
+import MySchedules from './My_schedules';
 
 function MainFunc() {
   return (
@@ -29,6 +31,7 @@ function MainFunc() {
           <Route path="/example1" element={<Example1 />} />
           <Route path="/example2" element={<Example2 />} />
           <Route path="/example3" element={<Example3 />} />
+          <Route path="/example5" element={<Example5 />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/reset_password" element={<ResetPassword />} />
@@ -44,7 +47,8 @@ function MainFunc() {
           <Route path="/Membership_join_page/:id" element={<MembershipJoinPage/>} />
           <Route path="/Schedule_Booking_Page" element={<ScheduleBookingPage/>} />
           <Route path="/Studio_select_schedule_and_date" element={<StudioSelectScheduleAndDate/>} />
-          <Route path="/Studio_check_in_page/:scheduleDate/:schedule_type/:studioId" element={<StudioCheckInPage/>} />
+          <Route path="/Studio_check_in_page/:scheduleDate/:scheduleId/:studioId" element={<StudioCheckInPage/>} />
+          <Route path="/My_schedules" element={<MySchedules/>} />
           
           <Route path="*" element={<h1>Invalid</h1>} />
         </Route>

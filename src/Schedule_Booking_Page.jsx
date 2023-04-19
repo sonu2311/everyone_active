@@ -272,12 +272,11 @@ export function OneSchedulesDetails({schedulesDetails}) {
     handleClose()
     setIsReserved(false)
   };
-  
-  
 
+  
   return ( 
      <>                                        
-        <div className='p20'> 
+        <div className='p20 boderbottomeee'> 
           <p>Name: {name}</p> 
           <p>Id:  {scheduleId}</p>
           <p>Start Time: {start_time}</p>
@@ -286,7 +285,7 @@ export function OneSchedulesDetails({schedulesDetails}) {
           <div>
             {!isReserved && (  
               <div style={{cursor:"pointer" }} >
-                <Button variant="text" size="small" onClick={handleOpen} >Reserve</Button>
+                <Button variant="outlined" size="small" onClick={handleOpen} >Reserve</Button>
               </div>
             )}
             {isReserved && (  
@@ -304,28 +303,28 @@ export function OneSchedulesDetails({schedulesDetails}) {
                 <div className='' >
                   <Box sx={{ ...style, width: 350, "& button": { m: 5 } }} >
                     <div >
+                      <p>Studio Name : {studio_name}</p>
                       <p>Schedule Type : {schedule_type}</p>
                       <p>Num Bookings : {num_bookings}</p>
-                      <p>Capacity : {capacity}</p>
-                      <p>Address : {address}</p>
-                      <p>Studio Name : {studio_name}</p>
+                      <p>Capacity : {num_bookings} out of {capacity} slots available</p>
+                      <p>Address : {address}</p>  
                     </div>
                     <hr/> 
                   <div className='color333 fw700'>Do you really want to Reserve ?</div> 
                     <div className='hsplit boxs'>
                       {!isReserved && ( 
-                        <div className=' p20 yes_no boxs'  onClick={reserve}    >
-                          Yes
-                        </div>
+                        <div className='mt10 '>
+                          <Button className='bseee1 ' variant="outlined" style={{"margin":"1px"}} onClick={reserve}  >Yes</Button>
+                        </div>    
                       )}
                       {isReserved && ( 
-                        <div className='p20 yes_no'  onClick={cancel}    >
-                          Cancel
-                        </div>
+                        <div className='mt10 '>
+                          <Button className='bseee1 ' variant="outlined" style={{"margin":"1px"}} onClick={cancel}   >Cancel</Button>
+                        </div>  
                       )}
-                      <div className='p20 yes_no ' onClick={handleClose}>
-                        No
-                      </div>
+                       <div className='m10 '>
+                          <Button className='bseee1  ' variant="outlined" style={{"margin":"1px"}} onClick={handleClose} > No</Button>
+                        </div>  
                     </div>
                   </Box>
                 </div>
@@ -344,7 +343,7 @@ export function SchedulesDetails({row}) {
   return ( 
      <>
      {list.map((x, index) => (                                           
-        <div className=' '>
+        <div className=''>
           <OneSchedulesDetails schedulesDetails={x} />        
         </div>       
       ))}    
@@ -360,9 +359,8 @@ function ScheduleBookingPage(){
   const [schedule_type, setSchedule_type]= React.useState("")
   const [upcomeingscheduleList, setUpcomeingScheduleList]= React.useState([])
   const [daysList, setDaysList]= React.useState([])
+  const [isDivShow, setIsDivShow]= React.useState(false) 
 	
-  
-  
   React.useEffect(()=> {  
     api("/get_all_studios", {}, function(backend_output){
       if("error" in backend_output){
@@ -385,7 +383,6 @@ function ScheduleBookingPage(){
   },[])
 
  
-
   const date_to_string =function(epoc_time){ 
     const Month=""+(epoc_time.getMonth()+1)
     const date=""+epoc_time.getDate()
@@ -434,6 +431,7 @@ function ScheduleBookingPage(){
         else{
           setUpcomeingScheduleList(backend_output.results)
           setDaysList(get_upcomming_days())
+          setIsDivShow(true)
         } 
       })
   }
@@ -498,27 +496,32 @@ function ScheduleBookingPage(){
                       </div>
                     </div>
                   </div>
-                  <div className='p20' style={{}}>
+                  <div className='p20' style={{overflowX:"auto"}}>
                     {/* <div>
                       upcomeingscheduleList=={JSON.stringify(upcomeingscheduleList)}
                     </div>  */}
-                    <div className='card boxs' style={{"width":"100%"}}>
-                      <div className='hsplit'>
-                        {upcomeingscheduleList.map((x, index)=>(
-                          <>
-                          <div className='bseee1 boxs'style={{}}  >
-                            <div className='pl10 pt10 pb10 boxs bckgr colorfff'style={{"width":"210px"}}>       
-                              <div>{daysList[index]}</div>
-                              <div>{x.date}</div>
-                            </div>
-                            <div className='' style={{"width":"210px"}} >
-                              <SchedulesDetails row={x.schedules} />
-                            </div>
-                          </div>  
-                          </>
-                        ))}
+
+                    {isDivShow && (
+                      <div className='card boxs' style={{"width":"1515px"}}>
+                        <div className='hsplit'>
+                          {upcomeingscheduleList.map((x, index)=>(
+                            <>
+                            <div className='bseee1 boxs'style={{}}  >
+                              <div className='pl10 pt10 pb10 boxs bckgr colorfff themecolor1 fontarial
+                              'style={{"width":"210px"}}>       
+                                <div>{daysList[index]}</div>
+                                <div className='pt2'>{x.date}</div>
+                              </div>
+                              <div className='' style={{"width":"210px"}} >
+                                <SchedulesDetails row={x.schedules} />
+                              </div>
+                            </div>  
+                            </>
+                          ))}
+                        </div>
                       </div>
-                    </div>  
+
+                    )}
                   </div>
                 </div>   
               </Grid>

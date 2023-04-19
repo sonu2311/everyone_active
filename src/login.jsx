@@ -61,7 +61,7 @@ function Login() {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item xs={1} sm={1} md={8} lg={8} > 
-              <div className='boxs hide-xs hide-sm  show-md show-lg login_div_height'>
+              <div className='boxs hide-xs hide-sm show-md show-lg login_div_height'>
                 <img alt="" style={{"width":"100%"}} src='images/image10.jpg'/>
               </div>
             </Grid>
@@ -69,10 +69,10 @@ function Login() {
                 
               {/* <Item> */}
                 <div className='mt5 p30 boxs login_div_height'>
-                  <div className='login_header2' style={{}}>
+                  <div className='login_header2 ' style={{}}>
                     Login
                   </div> 
-                  <div className='boxs  pl15 pr15 pb15'>
+                  <div className='boxs bseee1  pl15 pr15 pb15'>
                     <div className='m3020' style={{}}>
                       <TextField fullWidth label="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
                     </div>

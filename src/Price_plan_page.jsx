@@ -55,7 +55,7 @@ export function PricePlanPage(){
             <Grid item  md={1} lg={1}> 
             </Grid>
             <Grid item xs={12} sm={12} md={10} lg={10}>
-                <div className='login_header2 ml20 mr20 br2 fs25' style={{}}>
+                <div className='login_header4 ml20 mr20 br2 fs25 fontarial' style={{}}>
                   All Price Plan
                 </div>
                 <div className=' boxs' style={{}}>     

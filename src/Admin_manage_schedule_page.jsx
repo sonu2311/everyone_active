@@ -79,7 +79,7 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
         <Box sx={{ flexGrow: 1 }}>
           <Grid container >
             <Grid item xs={11} sm={11} md={7} lg={7}>
-                <div className='pl30 login_header3' style={{}}>
+                <div className='pl30 login_header5' style={{}}>
                   Add New Schedule
                 </div>
               <Item>  
@@ -359,11 +359,12 @@ export function Row({row, scheduleTypeList, trainerList}) {
 }
 
 
-export function BasicTable({scheduleList, scheduleTypeList, trainerList}) { 
+export function BasicTable({scheduleList, scheduleTypeList, trainerList , isDivShow}) { 
   
   return (
     <TableContainer component={Paper}>
       <Table sx={{ }} >
+        {isDivShow &&(
         <TableHead>
           <TableRow>
             <TableCell align="left" style={{"fontWeight":"700"}}>Name</TableCell>
@@ -378,6 +379,7 @@ export function BasicTable({scheduleList, scheduleTypeList, trainerList}) {
 
           </TableRow>
         </TableHead>
+        )}
         {/* {JSON.stringify(scheduleList)} */}
         <TableBody>
           <>
@@ -399,6 +401,7 @@ function AdminManageSchedulePage(){
   const [scheduleTypeList, setScheduleTypeList]= React.useState([])
   const [trainerList, setTrainerList]= React.useState([])
   const [studiosList, setStudiosList]= React.useState([])
+  const [isDivShow, setIsDivShow]= React.useState(false) 
 
   const scheduleDateStudioIdget_all_schedules =function(){
     setScheduleDate(scheduleDate)
@@ -413,6 +416,7 @@ function AdminManageSchedulePage(){
       else{
         console.log("/get_all_schedules=== ",backend_output.results )
         setScheduleList(backend_output.results)
+        setIsDivShow(true)
       } 
     })
   }
@@ -481,13 +485,12 @@ function AdminManageSchedulePage(){
               <Button variant="contained" size="large" onClick={scheduleDateStudioIdget_all_schedules} >Show</Button>  
             </div>
           </div> 
-          {/* <div className='mr20'>  
-            <Button variant="contained" size="large" >Add New schedule</Button>  
-          </div>          */}
         </div>
         <div className='p2030' style={{}}>
-          <div className='themecolor2 p20 fs22 bseee1 fontarial'>All schedules</div>
-          <BasicTable scheduleList={scheduleList} scheduleTypeList={scheduleTypeList} trainerList={trainerList} />  
+          {isDivShow &&(
+            <div className='themecolor2 p20 fs22 bseee1 fontarial'>All schedules</div>
+          )}
+          <BasicTable scheduleList={scheduleList} scheduleTypeList={scheduleTypeList} trainerList={trainerList}  isDivShow={isDivShow} />  
         </div>
 
         <div className='mb50 boxs pl30 ' >

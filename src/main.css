@@ -155,7 +155,6 @@ div.hsplit > div {
 .themecolor3{
   background-color: #1976d2;
 }
-.co
 
 
 .login_header{
@@ -165,9 +164,7 @@ div.hsplit > div {
   padding:20px 0px; 
   background-color: #1976d2;; 
   border-color:#2e6da4; 
-  color:#fff;
-
-  
+  color:#fff; 
 }
 .mb40{
   margin-bottom: 40px;
@@ -205,6 +202,32 @@ div.hsplit > div {
   /* color:#333; */
   
 }
+
+.login_header4{
+  text-align: center; 
+  font-size: 18px; 
+  font-weight:700; 
+  padding:15px 0px; 
+  color:#666;
+  border:solid #eee 1px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #eee;; 
+  border-color:#eee; 
+  /* color:#333; */
+}
+.login_header5{
+  text-align: left; 
+  font-size: 18px; 
+  font-weight:700; 
+  padding:15px 0px; 
+  color:#666;
+  border:solid #eee 1px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #eee;; 
+  border-color:#eee; 
+  /* color:#333; */
+}
+
 .bleee{
   border-right: solid #eee 1px;
 }
@@ -217,8 +240,14 @@ div.hsplit > div {
 .m3020{
   margin:30px 20px
 }
+.mt70{
+  margin-top:70px;
+}
 .themecolor1{
   background-color: #1976d2;;
+}
+.boderbottomeee{
+  border-bottom: solid #eee 1px;
 }
 .deteletequestion{
   cursor: pointer;
@@ -276,6 +305,9 @@ div.hsplit > div {
 }
 .pt30{
   padding-top: 30px;
+}
+.pt2{
+  padding-top: 2px;
 }
 .pb30{
   padding-bottom: 30px;

@@ -66,9 +66,7 @@ export function Row({row,scheduleId}) {
             </Button>
           )}
           {isCheckedIn &&(
-            <Button size="small"variant="contained" disableElevation>
-              Done
-            </Button>
+            <div className='themecolor2'>Done</div>
           )}
 
         </TableCell>

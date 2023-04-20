@@ -13,8 +13,6 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
-import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -24,7 +22,6 @@ import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Modal from "@mui/material/Modal";
-
 
 
 const style = {
@@ -53,7 +50,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
-function AddMembershipPlans(){
+function AddMembershipPlans({reload}){
 	const [planName, setPlanName]= React.useState("")
   const [description, setDescription]= React.useState("")
   const [price, setPrice]= React.useState(0)
@@ -73,14 +70,18 @@ function AddMembershipPlans(){
 			}
 			else{
 				console.log("membership_plan")
-				
-			}
+        alert("Membership Plan Added.")
+			} 
 		})
+    setPlanName("")
+    setDescription("")
+    setPrice("")
+    setExpiry_duration("")
+    setPaymentFrequency("")
+    setExpiryDurationUnit("")
+    reload()   
 	}
 
-  const scroll = function(){
-
-  }
 
   const uploadFile = function(file) {
     if (!file) return;
@@ -440,7 +441,7 @@ export function BasicTable({membershipPlansList}) {
         {/* membershipPlansList=== {JSON.stringify(membershipPlansList)} */}
         <TableBody>
           {membershipPlansList.map((row) => (
-            <Row row={row} membershipPlansList={membershipPlansList}/>
+            <Row key={row.id} row={row} membershipPlansList={membershipPlansList}/>
           ))}
         </TableBody>
       </Table>
@@ -452,8 +453,7 @@ export function BasicTable({membershipPlansList}) {
 function AdminManageMemberships(){
   const [membershipPlansList, setMembershipPlansList]= React.useState([])
   
-
-	React.useEffect(()=> {
+  const reload = function(){
     api("/get_all_membership_plans", {}, function(backend_output){
       if("error" in backend_output){
         alert(backend_output.error)
@@ -463,19 +463,22 @@ function AdminManageMemberships(){
         setMembershipPlansList(backend_output.results)
       } 
     })
+  }
+
+	React.useEffect(()=> {
+  reload()
     
   },[])
 	return (
     <>
       <div >
-        <ResponsiveAppBar/>
-        
+        <ResponsiveAppBar/>     
         <div className='p2030 boxs mt30' style={{}}>
-          <div className='themecolor2 p20 fs22 bseee1 fontarial'>All Membership Plans</div>
+          <div className=' login_header5 p20 fs22 bseee1 fontarial'>All Membership Plans</div>
           <BasicTable membershipPlansList={membershipPlansList} />  
         </div>
         <div className='mb50 boxs pl30 ' >
-          <AddMembershipPlans/>
+          <AddMembershipPlans reload={reload}/>
         </div>
       </div>
       </>

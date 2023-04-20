@@ -314,7 +314,7 @@ export function OneSchedulesDetails({schedulesDetails}) {
                     <div className='hsplit boxs'>
                       {!isReserved && ( 
                         <div className='mt10 '>
-                          <Button className='bseee1 ' variant="outlined" style={{"margin":"1px"}} onClick={reserve}  >Yes</Button>
+                          <Button className='bseee1 ' variant="contained" style={{"margin":"1px"}} onClick={reserve}  >Yes</Button>
                         </div>    
                       )}
                       {isReserved && ( 
@@ -445,9 +445,12 @@ function ScheduleBookingPage(){
             <Grid container >
               <Grid item  md={1} lg={1}> 
               </Grid>
-              <Grid item xs={12} sm={12} md={10} lg={10}>
-                <div className=' boxs ' style={{}}>
+              <Grid item xs={12} sm={12} md={10} lg={10}>        
+                <div className=' boxs ' style={{}}>       
                   <div className='mt40 mb20 pt10  textal'>
+                    <div className='login_header5 pl20 ml10 mr10 br2 mb20 fs22 fontarial' style={{}}>
+                      All Booking
+                    </div>
                     <div className='hsplit' >
                       <div className=' mr10'>
                         <FormControl sx={{ m: 1, minWidth: 180 }}  size="small">

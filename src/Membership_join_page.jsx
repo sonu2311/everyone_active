@@ -115,7 +115,7 @@ export function MembershipJoinPage(){
                 ))}     
               </div>        
               <div className='ml20 mb30 mr20 '> 
-                <div className=' pl20 login_header5 fontarial ' style={{}}>
+                <div className=' pl30 login_header5 fontarial ' style={{}}>
                    Join Membership
                 </div> 
                 <div className='mb50 ml20 boxs pl30 card' style={{}}>  
@@ -147,10 +147,8 @@ export function MembershipJoinPage(){
             <Grid item  md={2} lg={2}>
             </Grid>
           </Grid>
-        </Box>
-        
-      </div>
-			
+        </Box>      
+      </div>			
 		</div>
 	);
 }

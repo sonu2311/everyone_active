@@ -53,7 +53,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
-export function AddTrainer(){
+export function AddTrainer({reloadAllTrainers}){
 	const [trainerName, setTrainerName]= React.useState("")
   const [trainerId, setTrainerId]= React.useState(0)  
 	
@@ -68,8 +68,11 @@ export function AddTrainer(){
 			else{
 				console.log("setTrainerId.===",backend_output )
 				setTrainerId(backend_output.id)
+        alert("Trainer Added.")
 			}
 		})
+    setTrainerName("")
+    reloadAllTrainers()
 	} 
 	return (
 		<div>
@@ -105,23 +108,24 @@ export function AddTrainer(){
 
 
 
-export function AddScheduleType(){
+export function AddScheduleType({reloadAll_schedule_types}){
 	const [scheduleTypeName, setScheduleTypeName]= React.useState("")
   const [trainerId, setTrainerId]= React.useState(0)  
 	
   const adminAddschedule = function(){	
 		api("/add_schedule_type", {name:scheduleTypeName }, 
 			function(backend_output){
-			console.log("backend_output=",backend_output )
 			if("error" in backend_output) {
 				alert(backend_output.error)
 				console.log(backend_output.error)
 			}
 			else{
-				console.log("setTrainerId.===",backend_output )
 				setTrainerId(backend_output.id)
+        alert("Schedule Added.")
 			}
 		})
+    setScheduleTypeName("")
+    reloadAll_schedule_types()
 	} 
 	return (
 		<div>
@@ -297,7 +301,7 @@ export function BasicTable({resultsList}) {
             <br/> */}
         <TableBody>
           {resultsList.map((row) => (
-            <Row row={row} resultsList={resultsList}/>
+            <Row key={row.id} row={row} resultsList={resultsList}/>
           ))}
         </TableBody>
       </Table>
@@ -451,7 +455,7 @@ export function ScheduleBasicTable({scheduleList}) {
             <br/> */}
         <TableBody>
           {scheduleList.map((row) => (
-            <ScheduleRow row={row} scheduleList={scheduleList}/>
+            <ScheduleRow key={row.id} row={row} scheduleList={scheduleList}/>
           ))}
         </TableBody>
       </Table>
@@ -464,8 +468,8 @@ function AdminTrainersAndScheduleTypePage(){
   const [resultsList, setResultsList] = React.useState([])
   const [scheduleList, setscheduleList] = React.useState([])
   
-  
-	React.useEffect(()=> {
+
+  const reloadAllTrainers =function(){
     api("/get_all_trainers", {}, function(backend_output){
       if("error" in backend_output){
         alert(backend_output.error)
@@ -475,6 +479,9 @@ function AdminTrainersAndScheduleTypePage(){
         setResultsList(backend_output.results)
       } 
     })
+  }
+
+  const reloadAll_schedule_types =function(){
     api("/get_all_schedule_types", {}, function(backend_output){
       if("error" in backend_output){
         alert(backend_output.error)
@@ -484,26 +491,30 @@ function AdminTrainersAndScheduleTypePage(){
         setscheduleList(backend_output.results)
       } 
     })
+  }
+  
+	React.useEffect(()=> {
+    reloadAllTrainers()
+    reloadAll_schedule_types()
   },[])
 
 	return (
     <>
       <div >
-        <ResponsiveAppBar/>
-        
+        <ResponsiveAppBar/>     
         <div className='p2030 mt30' style={{}}>
-          <div className='themecolor2 p20 fs22 bseee1 fontarial'>All Trainers</div>
+          <div className=' p20 fs22 bseee1 fontarial login_header5'>All Trainers</div>
           <BasicTable resultsList={resultsList} />            
         </div>
         <div className='p2030' style={{}}>
-          <div className='themecolor2 p20 fs22 bseee1 fontarial'>All Schedule Type</div>
+          <div className='login_header5 p20 fs22 bseee1 fontarial'>All Schedule Type</div>
           <ScheduleBasicTable scheduleList={scheduleList} />             
         </div>
         <div className='mb20 boxs pl30 ' >
-          <AddTrainer/>
+          <AddTrainer reloadAllTrainers={reloadAllTrainers}/>
         </div>
         <div className='mb50 boxs pl30 ' >
-          <AddScheduleType/>
+          <AddScheduleType reloadAll_schedule_types={reloadAll_schedule_types}/>
         </div>   
       </div>
       </>

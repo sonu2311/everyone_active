@@ -68,11 +68,11 @@ function Login() {
             <Grid item xs={12} sm={12}  md={4} lg={4}>
                 
               {/* <Item> */}
-                <div className='mt5 p30 boxs login_div_height'>
-                  <div className='login_header2 ' style={{}}>
+                <div className='mt40 p30 boxs login_div_height '>
+                  <div className='textac fs22 fw700 mb20 color333 mt20 fontarial ' style={{}}>
                     Login
                   </div> 
-                  <div className='boxs bseee1  pl15 pr15 pb15'>
+                  <div className='boxs bseee1 br4 pl15 pr15 pb15'>
                     <div className='m3020' style={{}}>
                       <TextField fullWidth label="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
                     </div>

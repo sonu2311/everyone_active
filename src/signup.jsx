@@ -56,18 +56,18 @@ function Signup() {
               </div>
             </Grid>
             <Grid item xs={12} sm={12}  md={4} lg={4}>
-                <div className='mt5 p30 boxs login_div_height '>
-                  <div className='login_header2' style={{}}>
+                <div className='mt40 p30 boxs login_div_height'>
+                  <div className='textac fs22 fw700 mb20 color333 mt20 fontarial' style={{}}>
                     Signup
                   </div> 
-                  <div className='boxs  pl15 pr15 pb15'>
-                    <div style={{"margin":"20px"}}>
+                  <div className='boxs bseee1 br4  pl15 pr15 pb15'>
+                    <div className='m3020' >
                       <TextField fullWidth label="Name" type="text" name="name" value={name} onChange={(e)=> setName(e.target.value)} />
                     </div>
-                    <div style={{"margin":"20px"}}>
+                    <div className='m3020'>
                       <TextField fullWidth label="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
                     </div>
-                    <div style={{"margin":"20px"}}>
+                    <div className='m3020'>
                       <TextField fullWidth label="Password" type="password" name="password" value={password} onChange={(e)=> setPassword(e.target.value)} onKeyUp={e => { if(e.key == 'Enter') {sign_up()} }} />
                     </div>
                     <div className='m20'>

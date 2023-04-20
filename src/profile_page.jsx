@@ -58,7 +58,7 @@ const Item = styled(Paper)(({ theme }) => ({
     <div className='m40 ' style={{}}>
       <Card sx={{  }}>
         <CardContent>
-          <div className='profiledetailsheader themecolor2 ' style={{}}>
+          <div className='profiledetailsheader themecolor2 fontarial ' style={{}}>
           Change Password
           </div>
           
@@ -120,7 +120,7 @@ export function ProfileDetails(){
     <div className='m40 ' style={{}}>
       <Card sx={{  }}>
         <CardContent>
-          <div className='profiledetailsheader themecolor2' style={{}}>
+          <div className='profiledetailsheader themecolor2 fontarial' style={{}}>
             Profile Details
           </div> 
           <div className='m4020' style={{}}>

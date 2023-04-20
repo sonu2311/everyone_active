@@ -52,7 +52,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
- export function AddSchedule({scheduleTypeList , trainerList, studioId, scheduleDate}){
+ export function AddSchedule({scheduleTypeList , trainerList, studioId, scheduleDate, scheduleDateStudioIdget_all_schedules}){
 	const [scheduleName, setScheduleName]= React.useState("")
   const [startTime, setStartTime]= React.useState("")
   const [endTime, setEndTime]= React.useState("") 
@@ -67,9 +67,16 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 				alert(backend_output.error)
 				console.log(backend_output.error)
 			}
-			else{				
+			else{	
+        alert("Add new schedule.")			
 			}
 		})
+    setScheduleName("")
+    setStartTime("")
+    setEndTime("")
+    setTrainerName("")
+    setScheduleType("")
+    scheduleDateStudioIdget_all_schedules()
 	}
 
 	return (
@@ -376,7 +383,6 @@ export function BasicTable({scheduleList, scheduleTypeList, trainerList , isDivS
             <TableCell align="center" style={{"fontWeight":"700"}} >Ending Time</TableCell>
             <TableCell align="left" style={{"fontWeight":"700"}} >Save/Edit</TableCell> 
             <TableCell align="center" style={{"fontWeight":"700"}} >-</TableCell> 
-
           </TableRow>
         </TableHead>
         )}
@@ -384,7 +390,7 @@ export function BasicTable({scheduleList, scheduleTypeList, trainerList , isDivS
         <TableBody>
           <>
           {scheduleList.map((row) => (
-            <Row row={row} scheduleTypeList={scheduleTypeList} trainerList={trainerList}  />
+            <Row key={row.id} row={row} scheduleTypeList={scheduleTypeList} trainerList={trainerList}  />
           ))}
          </>
         </TableBody>
@@ -403,12 +409,7 @@ function AdminManageSchedulePage(){
   const [studiosList, setStudiosList]= React.useState([])
   const [isDivShow, setIsDivShow]= React.useState(false) 
 
-  const scheduleDateStudioIdget_all_schedules =function(){
-    setScheduleDate(scheduleDate)
-    setStudiosId(studioId)
-    console.log("/scheduleDateStudioIdget_all_schedules=== ",scheduleDate )
-    console.log("/scheduleDateStudioIdget_all_schedules=== ",studioId )
-
+  const reloadAll_schedules =function(){
     api("/get_all_schedules", {"schedule_date": scheduleDate, "studio_id": studioId}, function(backend_output){
       if("error" in backend_output){
         alert(backend_output.error)
@@ -419,6 +420,12 @@ function AdminManageSchedulePage(){
         setIsDivShow(true)
       } 
     })
+  }
+
+  const scheduleDateStudioIdget_all_schedules =function(){
+    setScheduleDate(scheduleDate)
+    setStudiosId(studioId)
+    reloadAll_schedules()
   }
 	
   React.useEffect(()=> {
@@ -455,10 +462,16 @@ function AdminManageSchedulePage(){
     <>
       <div >
         <ResponsiveAppBar/>
-        <div className='pt15 mt40 hsplit boxs '>  
-          <div className='ml30 mr20  '>
+        <div className='mr30 ml30 color666  pr20 br2 mt40 fw700  fs22 fontarial' style={{"width":"400px"}}>
+          Schedules
+        </div>
+        <div className='pt15 boxs hsplit boxs '> 
+          <div className='ml30  mr20 mt10' >
+            <TextField label="schedule Date" type="date" color="secondary" focused value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} />
+          </div> 
+          <div className=' mr20  '>
             <div className='' >
-              <FormControl sx={{ m: 1, minWidth: 150 }}  fullWidth >
+              <FormControl sx={{ m: 1, minWidth: 150 }} >
                 <InputLabel id="demo-select-small"  className=''>Studio Id</InputLabel>
                 <Select
                   labelId="demo-select-small"
@@ -477,24 +490,20 @@ function AdminManageSchedulePage(){
               </FormControl>
             </div>
           </div>
-          <div className='hsplit'>
-            <div className='mr20 mt10' >
-              <TextField label="schedule Date" type="date" color="secondary" focused value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} />
-            </div>
-            <div className='ml20 mt12'>  
-              <Button variant="contained" size="large" onClick={scheduleDateStudioIdget_all_schedules} >Show</Button>  
-            </div>
+         
+          <div className='mt12'>  
+            <Button variant="contained" size="small" onClick={scheduleDateStudioIdget_all_schedules} >Show</Button>  
           </div> 
         </div>
         <div className='p2030' style={{}}>
           {isDivShow &&(
-            <div className='themecolor2 p20 fs22 bseee1 fontarial'>All schedules</div>
+            <div className='login_header5 p20 fs22 bseee1 fontarial'>All schedules</div>
           )}
           <BasicTable scheduleList={scheduleList} scheduleTypeList={scheduleTypeList} trainerList={trainerList}  isDivShow={isDivShow} />  
         </div>
 
         <div className='mb50 boxs pl30 ' >
-          <AddSchedule scheduleDate={scheduleDate}  studioId={studioId} scheduleTypeList={scheduleTypeList} trainerList={trainerList}/>
+          <AddSchedule scheduleDate={scheduleDate}  studioId={studioId} scheduleTypeList={scheduleTypeList} trainerList={trainerList} scheduleDateStudioIdget_all_schedules={scheduleDateStudioIdget_all_schedules}/>
         </div>
       </div>
       </>

@@ -55,7 +55,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
-function AddStudio(){
+function AddStudio({reload}){
 	const [studiosName, setStudiosName]= React.useState("")
   const [address, setAddress]= React.useState("")
   const [capacity, setCapacity]= React.useState("") 
@@ -74,6 +74,11 @@ function AddStudio(){
 				console.log("studio added.===",backend_output )
 			}
 		})
+    setStudiosName("")
+    setAddress("")
+    setCapacity("")
+    setPicture("")
+    reload()
 	}
 
   const uploadFile = function(file) {
@@ -117,11 +122,11 @@ function AddStudio(){
                     <input type="file"
                       onChange={(e) => uploadFile(e.target.files[0])} />
                   </div>
-                  <div className='boxs imagewidth textac'>
-                    {picture.length>0 &&(
+                  <div className='ml20 boxs imagewidth textal'>
+                    {/* {picture.length>0 &&( */}
                       <img style={{ width: '150px', verticalAlign: 'middle'}} 
                       src={picture} />
-                    )} 
+                    {/* )}  */}
                   </div>   
                   <div className='textal mr20 ml20 mt20'>
                     <Button variant="contained" disableElevation onClick={adminAddNewStudio}>
@@ -337,14 +342,13 @@ export function BasicTable({studiosList}) {
             <TableCell align="center" style={{"fontWeight":"700"}} >Image</TableCell> 
             <TableCell align="center" style={{"fontWeight":"700"}} >Save</TableCell> 
             <TableCell align="center">-</TableCell> 
-
           </TableRow>
         </TableHead>
         {/* {JSON.stringify(studiosList)}
             <br/> */}
         <TableBody>
           {studiosList.map((row) => (
-            <Row row={row} studiosList={studiosList}/>
+            <Row key={row.id} row={row} studiosList={studiosList}/>
           ))}
         </TableBody>
       </Table>
@@ -356,8 +360,8 @@ export function BasicTable({studiosList}) {
 function AdminManageStudio(){
   const [studiosList, setStudiosList]= React.useState([])
   const [files, setFiles] = React.useState([])
-  
-	React.useEffect(()=> {
+
+  const reload =function(){
     api("/get_all_studios", {}, function(backend_output){
       if("error" in backend_output){
         alert(backend_output.error)
@@ -367,6 +371,10 @@ function AdminManageStudio(){
         setStudiosList(backend_output.results)
       } 
     })
+  }
+  
+	React.useEffect(()=> {
+    reload()
   },[])
 
 	return (
@@ -374,11 +382,11 @@ function AdminManageStudio(){
       <div >
         <ResponsiveAppBar/>       
         <div className='p2030 boxs mt30' style={{}}>
-          <div className='themecolor2 p20 fs25 bseee1 fontarial'>All studio</div>
+          <div className='p20 fs22 bseee1 fontarial login_header5'>All studio</div>
           <BasicTable studiosList={studiosList} />  
         </div>
         <div className='mb50 boxs pl30 ' >
-          <AddStudio />
+          <AddStudio reload={reload} />
         </div>
       </div>
       </>

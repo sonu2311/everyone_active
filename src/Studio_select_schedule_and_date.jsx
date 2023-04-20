@@ -222,6 +222,9 @@ function StudioSelectScheduleAndDate(){
               </Grid>
               <Grid item xs={12} sm={12} md={10} lg={10}>
                 <div className='mt40 mb20 pt10 pl20 boxs'>
+                  <div className=' themecolor2 color666  pr20 br2  mb20 fw700  fs22 fontarial' style={{"width":"400px"}}>
+                    Schedules
+                  </div>
                   <div className='hsplit' >
                     <div className='mr10 mb10'>
                       <TextField label="schedule Date" type="date" color="secondary" focused value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} />
@@ -253,11 +256,11 @@ function StudioSelectScheduleAndDate(){
                     </div>
                   </div>
                 </div>
-                {scheduleList.length>0 && (
+                {/* {scheduleList.length>0 && (
                   <div className=' themecolor2 textal pl20 ml20 mr20 br2 fs25 fontarial' style={{}}>
                     All schedules
                   </div>
-                )}
+                )} */}
                 {/* {isDivShow && (
                   <div className='mt70'>
                     <div className='   textac fs18 pt70 fontarial'>Select Schedule Date  And Studio For All Schedule For Date. </div>

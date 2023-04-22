@@ -155,7 +155,7 @@ export function ResponsiveAppBar() {
               </a>
             )}
               {/* {role != "ADMIN" && ( */}
-              {IsLogin  && (role=="ADMIN" || role=="CUSTOMER") && (
+              {IsLogin  && (role=="ADMIN" || role=="STUDIO") && (
                 <a className='a_deco aoutline hide-sm hide-xs show-md show-lg' href="#/Schedule_Booking_Page">
                   <Button
                   sx={{ my: 2, color: 'white', display: 'block' }}>

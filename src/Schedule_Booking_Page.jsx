@@ -52,167 +52,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-
-
-export function Row({row}) {
-  const [studioId, setStudiosId]= React.useState(row.id)
-  const [scheduleName, setScheduleName]= React.useState(row.name)
-  const [startTime, setStartTime]= React.useState(row.start_time)
-  const [endTime, setEndTime]= React.useState(row.end_time) 
-  const [scheduleDate, setScheduleDate] = React.useState(row.schedule_date)
-  const [trainerName, setTrainerName]= React.useState(row.trainer)
-  const [scheduleType, setScheduleType]= React.useState(row.schedule_type)
-  const [isUpdate, setIsUpdate]= React.useState(false)
-  const [isDeleted, setIsDeleted]= React.useState(false)
-  
-  const update_schedule = function(){	
-    api("/update_schedule", {name:scheduleName, start_time:startTime, end_time:endTime, schedule_date:scheduleDate, studio_id:studioId, trainer:trainerName, schedule_type:scheduleType}, 
-      function(backend_output){
-      console.log("backend_output=",backend_output )
-      if("error" in backend_output) {
-        alert(backend_output.error)
-        console.log(backend_output.error)
-      }
-      else{ 
-        setIsUpdate(false)
-      }
-    })
-  }
-
-  const delete_schedule = function(){	
-    api("/delete_schedule", {id:studioId }, function(backend_output){
-      console.log("backend_output=",backend_output )
-      if("error" in backend_output) {
-        alert(backend_output.error)
-        console.log(backend_output.error)
-      }
-      else{
-        setIsDeleted(true)
-      }
-    })
-  }
-
-  const studio_edit_input_on =function(){
-    setIsUpdate(true)
-  }
-
-
-  return (
-    <>
-    {(!isDeleted) &&(
-    <TableRow
-        key={row.id}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-      >
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="large" onClick={studio_edit_input_on} >
-            edit
-          </Button> 
-        </TableCell>  
-        <TableCell  align="center" scope="row">
-          {!isUpdate && (
-              {scheduleName}
-          )}
-          {isUpdate && (
-            <TextField  label="Schedule Name" type="text" name="name" value={scheduleName} onChange={(e)=> setScheduleName(e.target.value)} />           
-          )}
-        </TableCell>
-        <TableCell  align="center" scope="row">
-          {!isUpdate && (
-            {trainerName}
-          )}
-          {isUpdate && (
-            <TextField  label="Trainer Name" type="text" name="name" value={trainerName} onChange={(e)=> setTrainerName(e.target.value)} />           
-          )}
-        </TableCell>
-        <TableCell  align="center" scope="row">
-          {!isUpdate && (
-            {scheduleDate}
-          )}
-          {isUpdate && (
-            <TextField style={{"width":"95%"}}  type="datetime-local" label="Schedule Date" value= {scheduleDate} onChange={(e)=>setScheduleDate(e.target.value)} />         
-          )}
-        </TableCell>
-        <TableCell  align="center" scope="row">
-          {!isUpdate && (
-              {startTime}
-          )}
-          {isUpdate && (
-            <TextField style={{"width":"95%"}}  type="datetime-local" label=" Starting Time " value= {startTime} onChange={(e)=>setStartTime(e.target.value)} />           
-          )}
-        </TableCell>
-        <TableCell  align="center" scope="row"> 
-          {!isUpdate && (
-            {studioId}
-          )}
-          {isUpdate && (
-            <TextField fullWidth label="Studio Id" type="number" name="name" value={studioId} onChange={(e)=> setStudiosId(e.target.value)} />         
-          )}
-        </TableCell>
-        <TableCell  align="center" scope="row">
-          {!isUpdate && (
-            {scheduleType}
-          )}
-          {isUpdate && (
-             <TextField fullWidth label="Schedule Type" type="text" name="name" value={scheduleType} onChange={(e)=> setScheduleType(e.target.value)} />           
-          )} 
-        </TableCell>
-        <TableCell  align="center" scope="row">
-          {!isUpdate && (
-              {endTime}
-          )}
-          {isUpdate && (
-            <TextField  style={{"width":"95%"}} type="datetime-local" label="Ending Time " value={endTime} onChange={(e)=>setEndTime(e.target.value)} />           
-          )} 
-        </TableCell>
-        <TableCell  align="center" scope="row"> 
-          <Button variant="contained" size="large" onClick={update_schedule} >
-            Save
-          </Button> 
-        </TableCell>
-        <TableCell  align="center">
-          <DeleteForeverIcon onClick={delete_schedule} /> 
-        </TableCell>
-      </TableRow>
-      )}
-    </>
-  ) 
-}
-
-
-export function BasicTable({scheduleList}) {  
-  return (
-    <TableContainer component={Paper}>
-      <Table sx={{ }} >
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">
-              <EditIcon/>
-              </TableCell>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center" >Trainer Name</TableCell>
-            <TableCell align="center" >schedule Date</TableCell>
-            <TableCell align="center">Starting Time</TableCell> 
-            <TableCell align="center" >studioId</TableCell>
-            <TableCell align="center" >Schedule Type</TableCell>
-            <TableCell align="center" >Ending Time</TableCell>
-            <TableCell align="center">Save</TableCell> 
-            <TableCell align="center">-</TableCell> 
-
-          </TableRow>
-        </TableHead>
-        {/* {JSON.stringify(teachersList)}
-            <br/> */}
-        <TableBody>
-          {scheduleList.map((row) => (
-            <Row row={row} scheduleList={scheduleList} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
-
 export function OneSchedulesDetails({schedulesDetails}) {
   const [scheduleId, setScheduleId]= React.useState(schedulesDetails.id)
   const [name, setname]= React.useState(schedulesDetails.name)
@@ -275,7 +114,7 @@ export function OneSchedulesDetails({schedulesDetails}) {
 
   
   return ( 
-     <>                                        
+     <>  
         <div className='p20 boderbottomeee'> 
           <p>Name: {name}</p> 
           <p>Id:  {scheduleId}</p>
@@ -331,26 +170,61 @@ export function OneSchedulesDetails({schedulesDetails}) {
               </Modal>
             </div>  
           </div>  
-        </div>   
+        </div>  
+       
      </>
   );
 }
                  
 export function SchedulesDetails({row}) {
   const [scheduleId, setScheduleId]= React.useState(row.id)
-  const [list, setList]= React.useState(row)
+  const [scheduleDictionary, setScheduleDictionary]= React.useState(row)
   const [open, setOpen] = React.useState(false);
   return ( 
-     <>
-     {list.map((x, index) => (                                           
-        <div className=''>
-          <OneSchedulesDetails schedulesDetails={x} />        
-        </div>       
-      ))}    
-
+     <> 
+      <>{scheduleDictionary.map((x, index) => (                                           
+          <div className=''>
+            <OneSchedulesDetails key={x.id} schedulesDetails={x} />    
+          </div>       
+        ))}
+        </>
      </>
   );
 }
+
+const date_to_string =function(epoc_time){ 
+  const Month=""+(epoc_time.getMonth()+1)
+  const date=""+epoc_time.getDate()
+  const Hours=""+epoc_time.getDate()
+  const Minutes=""+epoc_time.getDate()
+
+  const date_time = epoc_time.getFullYear()+"-"+Month.padStart(2,"0")+"-"+date.padStart(2,"0")
+  return date_time
+ }
+
+ const get_upcomming_days =function(){
+  const d=new Date()
+  var tmp_list = []
+  var tmp_list2 =["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+   for (let i = 0; i < 7; i++){
+    tmp_list[i]=tmp_list2[d.getDay()]  
+     d.setDate(d.getDate()+1)
+     console.log("tmp_list ===", tmp_list)
+   }  
+   return tmp_list
+ }
+
+const get_upcomming_dates1 =function(p){
+  const d=new Date()
+  d.setDate(d.getDate()+p)
+  var tmp_list = []
+   for (let i = 0; i < 7; i++){
+     tmp_list[i] = date_to_string(d)
+     d.setDate(d.getDate()+1)
+     console.log("tmp_list ===", tmp_list)
+   }  
+   return tmp_list
+ }
 
 function ScheduleBookingPage(){
   const [studioId, setStudiosId]= React.useState(0)
@@ -359,7 +233,10 @@ function ScheduleBookingPage(){
   const [schedule_type, setSchedule_type]= React.useState("")
   const [upcomeingscheduleList, setUpcomeingScheduleList]= React.useState([])
   const [daysList, setDaysList]= React.useState([])
-  const [isDivShow, setIsDivShow]= React.useState(false) 
+  const [isDivShow, setIsDivShow]= React.useState(true)
+  const counter= React.useRef(0)
+  const [upcommingDaysList, setUpcommingDaysList]= React.useState(get_upcomming_dates1(0))
+  
 	
   React.useEffect(()=> {  
     api("/get_all_studios", {}, function(backend_output){
@@ -383,17 +260,6 @@ function ScheduleBookingPage(){
   },[])
 
  
-  const date_to_string =function(epoc_time){ 
-    const Month=""+(epoc_time.getMonth()+1)
-    const date=""+epoc_time.getDate()
-    const Hours=""+epoc_time.getDate()
-    const Minutes=""+epoc_time.getDate()
-  
-    const date_time = epoc_time.getFullYear()+"-"+Month.padStart(2,"0")+"-"+date.padStart(2,"0")
-    return date_time
-   }
-
-
   const get_upcomming_dates =function(){
    const d=new Date()
    var tmp_list = []
@@ -405,32 +271,32 @@ function ScheduleBookingPage(){
     }  
     return tmp_list
   }
+ 
+  const previous = function(){
+    show ()
+    counter.current=counter.current-7  
+    setUpcommingDaysList(get_upcomming_dates1(counter.current))
+   
+  }
 
-
-  const get_upcomming_days =function(){
-    const d=new Date()
-    var tmp_list = []
-    var tmp_list2 =["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-     for (let i = 0; i < 7; i++){
-      tmp_list[i]=tmp_list2[d.getDay()]  
-       d.setDate(d.getDate()+1)
-       console.log("tmp_list ===", tmp_list)
-     }  
-     return tmp_list
-   }
+  const next = function(){
+    counter.current=counter.current+7
+    setUpcommingDaysList(get_upcomming_dates1(counter.current))
+    show ()
+  }
 
    get_upcomming_days()
  
   
   const show = function(){
     api("/get_upcoming_schedules", {studio_id_list:[studioId] ,
-      date_list: get_upcomming_dates(), schedule_type: schedule_type}, function(backend_output){
+      date_list: upcommingDaysList, schedule_type: schedule_type}, function(backend_output){
         if("error" in backend_output){
           alert(backend_output.error)
         }
         else{
           setUpcomeingScheduleList(backend_output.results)
-          setDaysList(get_upcomming_days())
+          setDaysList(get_upcomming_days())  
           setIsDivShow(true)
         } 
       })
@@ -497,15 +363,22 @@ function ScheduleBookingPage(){
                           Show
                         </Button> 
                       </div>
+                      <div>
+                        <Button variant="contained" onClick={previous}>previous</Button>
+                        <Button variant="contained" onClick={next}>next</Button>
+                      </div>
+                      <p>counter.current={counter.current}</p>
+
+                      <p>upcommingDaysList={JSON.stringify(upcommingDaysList)}</p>
                     </div>
                   </div>
                   <div className='p20' style={{overflowX:"auto"}}>
-                    {/* <div>
+                    <div>
                       upcomeingscheduleList=={JSON.stringify(upcomeingscheduleList)}
-                    </div>  */}
-
+                    </div> 
                     {isDivShow && (
                       <div className='card boxs' style={{"width":"1515px"}}>
+                        
                         <div className='hsplit'>
                           {upcomeingscheduleList.map((x, index)=>(
                             <>
@@ -516,7 +389,9 @@ function ScheduleBookingPage(){
                                 <div className='pt2'>{x.date}</div>
                               </div>
                               <div className='' style={{"width":"210px"}} >
-                                <SchedulesDetails row={x.schedules} />
+                              {x.schedules.length > 0 &&(
+                                <SchedulesDetails  row={x.schedules} />
+                              )}  
                               </div>
                             </div>  
                             </>

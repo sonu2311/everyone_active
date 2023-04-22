@@ -27,7 +27,7 @@ function MainFunc() {
     <HashRouter>
       <Routes>
         <Route >
-          <Route path="/" element={<Example1 />} />
+          <Route path="/" element={<Signup />} />
           <Route path="/example1" element={<Example1 />} />
           <Route path="/example2" element={<Example2 />} />
           <Route path="/example3" element={<Example3 />} />

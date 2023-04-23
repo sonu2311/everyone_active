@@ -15,16 +15,11 @@ import Select from '@mui/material/Select';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { DataArraySharp } from '@mui/icons-material';
 import Modal from "@mui/material/Modal";
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 
 
 const style = {
@@ -232,10 +227,10 @@ function ScheduleBookingPage(){
   const [studiosList, setStudiosList]= React.useState([])
   const [schedule_type, setSchedule_type]= React.useState("")
   const [upcomeingscheduleList, setUpcomeingScheduleList]= React.useState([])
-  const [daysList, setDaysList]= React.useState([])
-  const [isDivShow, setIsDivShow]= React.useState(true)
+  const [daysList, setDaysList]= React.useState(get_upcomming_days())
+  const [isDivShow, setIsDivShow]= React.useState(false)
   const counter= React.useRef(0)
-  const [upcommingDaysList, setUpcommingDaysList]= React.useState(get_upcomming_dates1(0))
+  const upcommingDaysList= React.useRef(get_upcomming_dates1(0))
   
 	
   React.useEffect(()=> {  
@@ -271,32 +266,29 @@ function ScheduleBookingPage(){
     }  
     return tmp_list
   }
+
  
-  const previous = function(){
-    show ()
-    counter.current=counter.current-7  
-    setUpcommingDaysList(get_upcomming_dates1(counter.current))
-   
+  const previous = function(){    
+    counter.current=counter.current-7
+    upcommingDaysList.current= get_upcomming_dates1(counter.current) 
+    show () 
   }
 
   const next = function(){
     counter.current=counter.current+7
-    setUpcommingDaysList(get_upcomming_dates1(counter.current))
+    upcommingDaysList.current= get_upcomming_dates1(counter.current)
     show ()
   }
 
-   get_upcomming_days()
- 
   
   const show = function(){
     api("/get_upcoming_schedules", {studio_id_list:[studioId] ,
-      date_list: upcommingDaysList, schedule_type: schedule_type}, function(backend_output){
+      date_list: upcommingDaysList.current, schedule_type: schedule_type}, function(backend_output){
         if("error" in backend_output){
           alert(backend_output.error)
         }
         else{
-          setUpcomeingScheduleList(backend_output.results)
-          setDaysList(get_upcomming_days())  
+          setUpcomeingScheduleList(backend_output.results)     
           setIsDivShow(true)
         } 
       })
@@ -363,26 +355,28 @@ function ScheduleBookingPage(){
                           Show
                         </Button> 
                       </div>
-                      <div>
-                        <Button variant="contained" onClick={previous}>previous</Button>
-                        <Button variant="contained" onClick={next}>next</Button>
-                      </div>
-                      <p>counter.current={counter.current}</p>
+                      {/* <p>counter.current={counter.current}</p>
 
-                      <p>upcommingDaysList={JSON.stringify(upcommingDaysList)}</p>
+                      <p>upcommingDaysList={JSON.stringify(upcommingDaysList.current)}</p> */}
                     </div>
                   </div>
                   <div className='p20' style={{overflowX:"auto"}}>
-                    <div>
+                    {/* <div>
                       upcomeingscheduleList=={JSON.stringify(upcomeingscheduleList)}
-                    </div> 
+                    </div>  */}
                     {isDivShow && (
                       <div className='card boxs' style={{"width":"1515px"}}>
-                        
+                        <div className='mb20 boxs' style={{}}>
+                         <span className='mr20'>
+                            <Button variant="outlined" onClick={previous} startIcon={<SkipPreviousIcon />}>previous</Button>
+                          </span>
+                          <Button variant="outlined" onClick={next} endIcon={<SkipNextIcon />}>next</Button>
+                        </div>
                         <div className='hsplit'>
                           {upcomeingscheduleList.map((x, index)=>(
                             <>
                             <div className='bseee1 boxs'style={{}}  >
+                            
                               <div className='pl10 pt10 pb10 boxs bckgr colorfff themecolor1 fontarial
                               'style={{"width":"210px"}}>       
                                 <div>{daysList[index]}</div>
